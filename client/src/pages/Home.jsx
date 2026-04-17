@@ -1,9 +1,63 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { Briefcase, Sparkles, Target, ArrowRight, ShieldCheck, Users, Zap, CheckCircle, TrendingUp, Award, MessageSquare } from 'lucide-react';
+import { Briefcase, Sparkles, Target, ArrowRight, ShieldCheck, Users, Zap, CheckCircle, TrendingUp, Award, MessageSquare, Search, Layout, Database, Layers, BarChart, GraduationCap } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchJobs } from '../features/jobs/jobSlice';
+import JobCard from '../components/JobCard';
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { listings, isLoading } = useSelector(state => state.job);
+  const [activeCategory, setActiveCategory] = useState('Frontend Developer');
+  const [heroSearch, setHeroSearch] = useState('');
+
+  const handleHeroSearch = (e) => {
+    e.preventDefault();
+    if (heroSearch.trim()) {
+      navigate('/jobs', { state: { search: heroSearch } });
+    }
+  };
+
+  useEffect(() => {
+    dispatch(fetchJobs({ isDeadlineActive: true }));
+  }, [dispatch]);
+
+  const topCompaniesMock = [
+    { name: 'Google', logo: 'G', desc: 'Search and innovation' },
+    { name: 'Meta', logo: 'M', desc: 'Connecting the world' },
+    { name: 'Amazon', logo: 'A', desc: 'E-commerce & Cloud' },
+    { name: 'Microsoft', logo: 'MS', desc: 'Empowering everyone' }
+  ];
+  
+  const uniqueCompanies = Array.from(new Set(listings.map(j => j.company)));
+  const displayCompanies = uniqueCompanies.length >= 4 
+    ? uniqueCompanies.slice(0, 8).map(c => ({
+        name: c,
+        logo: c.charAt(0).toUpperCase(),
+        desc: 'Hiring actively on our platform.'
+      }))
+    : topCompaniesMock;
+
+  const categories = [
+    { name: 'Frontend Developer', icon: Layout, color: 'text-blue-600' },
+    { name: 'Backend Developer', icon: Database, color: 'text-emerald-600' },
+    { name: 'Full Stack', icon: Layers, color: 'text-purple-600' },
+    { name: 'Data Science', icon: BarChart, color: 'text-amber-600' },
+    { name: 'Internship', icon: GraduationCap, color: 'text-rose-600' }
+  ];
+  
+  const categorizedJobs = listings.filter(job => {
+    if (activeCategory === 'Internship') {
+       return job.type === 'internship';
+    }
+    return job.title.toLowerCase().includes(activeCategory.toLowerCase()) || 
+           job.description.toLowerCase().includes(activeCategory.toLowerCase());
+  }).slice(0, 3); // show 3 top jobs
+
+  const featuredJobs = listings.slice(0, 4);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -91,14 +145,35 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.6 }}
-            className="flex flex-col sm:flex-row justify-center gap-4"
+            className="max-w-3xl mx-auto"
           >
-            <Link to="/register" className="btn-primary py-4 px-8 text-lg flex items-center justify-center gap-2 hover:-translate-y-1 transition-transform group">
-              Start Applying <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link to="/jobs" className="btn-secondary py-4 px-8 text-lg">
-              Explore Open Roles
-            </Link>
+            <form onSubmit={handleHeroSearch} className="relative group mb-8">
+              <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+                <Search className="w-5 h-5 text-slate-400 group-focus-within:text-primary-500 transition-colors" />
+              </div>
+              <input 
+                type="text" 
+                placeholder="Search for roles like 'Frontend', 'Meta', or 'Remote'..."
+                className="w-full pl-14 pr-32 py-5 rounded-2xl bg-white shadow-2xl shadow-primary-900/10 border border-slate-100 focus:outline-none focus:ring-4 focus:ring-primary-100 focus:border-primary-300 transition-all text-lg"
+                value={heroSearch}
+                onChange={(e) => setHeroSearch(e.target.value)}
+              />
+              <button 
+                type="submit"
+                className="absolute right-3 top-2 bottom-2 px-6 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-primary-600/20 active:scale-95 flex items-center gap-2"
+              >
+                Search <ArrowRight className="w-4 h-4" />
+              </button>
+            </form>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link to="/register" className="btn-primary py-4 px-8 text-lg flex items-center justify-center gap-2 hover:-translate-y-1 transition-transform group">
+                Join Now
+              </Link>
+              <Link to="/jobs" className="btn-secondary py-4 px-8 text-lg flex items-center justify-center gap-2 bg-white/50 backdrop-blur-sm">
+                Explore Jobs
+              </Link>
+            </div>
           </motion.div>
         </div>
 
@@ -124,6 +199,134 @@ const Home = () => {
           </div>
           <span className="text-xs font-bold text-slate-700">Smart Apply</span>
         </motion.div>
+      </section>
+
+      {/* Top Companies */}
+      <section className="py-24 bg-white border-t border-slate-100">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Top Companies Hiring</h2>
+             <p className="text-slate-500 max-w-xl mx-auto">Discover roles at leading tech companies.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {displayCompanies.map((company, idx) => {
+              const colors = [
+                'bg-blue-50 text-blue-600',
+                'bg-purple-50 text-purple-600',
+                'bg-emerald-50 text-emerald-600',
+                'bg-rose-50 text-rose-600',
+                'bg-amber-50 text-amber-600',
+                'bg-indigo-50 text-indigo-600'
+              ];
+              const colorClass = colors[idx % colors.length];
+              
+              return (
+                <div key={idx} className="card p-6 flex flex-col items-center text-center group hover:border-primary-200 hover:-translate-y-2 transition-all duration-300 bg-white/50 backdrop-blur-sm">
+                  <div className={`w-16 h-16 rounded-2xl ${colorClass} text-2xl font-bold flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-inner`}>
+                    {company.logo}
+                  </div>
+                  <h3 className="font-bold text-slate-800 mb-1">{company.name}</h3>
+                  <p className="text-xs text-slate-500 mb-4 line-clamp-1">{company.desc}</p>
+                  <button 
+                    onClick={() => navigate('/jobs', { state: { search: company.name } })}
+                    className="text-primary-600 font-bold text-sm flex items-center justify-center gap-1 group/btn"
+                  >
+                    View Jobs <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Job Categories */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Discover by Category</h2>
+            <p className="text-slate-500 max-w-xl mx-auto">Find the perfect role by browsing through specialized categories.</p>
+          </div>
+          
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {categories.map(cat => (
+              <button
+                key={cat.name}
+                onClick={() => setActiveCategory(cat.name)}
+                className={`flex items-center gap-2 px-7 py-4 rounded-2xl text-sm font-bold transition-all duration-300 ${
+                  activeCategory === cat.name 
+                    ? 'bg-primary-600 text-white shadow-xl shadow-primary-500/30 -translate-y-1' 
+                    : 'bg-white text-slate-600 border border-slate-100 hover:border-primary-200 hover:text-primary-600 hover:bg-white hover:shadow-lg'
+                }`}
+              >
+                <cat.icon className={`w-4 h-4 ${activeCategory === cat.name ? 'text-white' : cat.color}`} />
+                {cat.name}
+              </button>
+            ))}
+          </div>
+
+          {isLoading ? (
+            <div className="text-center text-slate-500 py-10">Loading jobs...</div>
+          ) : categorizedJobs.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {categorizedJobs.map(job => (
+                 <JobCard key={job._id} job={job} role="student" />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-white rounded-xl border border-slate-100">
+               <h3 className="text-lg font-semibold text-slate-700">No jobs found in this category</h3>
+               <p className="text-slate-500 mt-2">Try another category or browse all jobs.</p>
+            </div>
+          )}
+
+          <div className="text-center mt-12">
+             <button 
+                onClick={() => navigate('/jobs', { state: activeCategory === 'Internship' ? { type: 'internship' } : { search: activeCategory } })} 
+                className="btn-secondary py-3 px-8 inline-flex items-center gap-2"
+             >
+               View All {activeCategory} Roles <ArrowRight className="w-4 h-4" />
+             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Jobs */}
+      <section className="py-24 bg-white border-b border-slate-100">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 text-rose-600 font-bold text-xs uppercase tracking-wide mb-3">
+                <Sparkles className="w-3 h-3" /> Featured
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Recommended Jobs</h2>
+            </div>
+            <Link to="/jobs" className="text-primary-600 font-semibold hover:text-primary-700 flex items-center gap-1 group">
+               Browse all <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          {isLoading ? (
+            <div className="text-center text-slate-500 py-10">Loading jobs...</div>
+          ) : featuredJobs.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:grid-cols-4">
+              {featuredJobs.map(job => (
+                 <div key={job._id} className="relative group flex flex-col h-full">
+                    <div className="absolute -top-3 -right-3 z-20">
+                      <span className="bg-rose-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full shadow-sm">
+                        Hot
+                      </span>
+                    </div>
+                    <JobCard job={job} role="student" />
+                 </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-slate-50 rounded-xl border border-slate-100">
+               <p className="text-slate-500">More featured jobs coming soon.</p>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Features Grid */}

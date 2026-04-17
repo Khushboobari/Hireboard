@@ -36,6 +36,18 @@ const jobSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    requirements: {
+      type: [String],
+      default: [],
+    },
+    responsibilities: {
+      type: [String],
+      default: [],
+    },
+    aboutCompany: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );

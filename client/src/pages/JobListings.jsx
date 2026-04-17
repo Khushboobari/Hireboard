@@ -5,13 +5,15 @@ import JobCard from '../components/JobCard';
 import Navbar from '../components/Navbar';
 import { Search, Filter, Loader2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useLocation } from 'react-router-dom';
 
 const JobListings = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { listings, isLoading } = useSelector(state => state.job);
   const { isAdmin } = useAuth();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
+  const [searchTerm, setSearchTerm] = useState(location.state?.search || '');
+  const [typeFilter, setTypeFilter] = useState(location.state?.type || '');
   const [locationFilter, setLocationFilter] = useState('');
   const [isDeadlineActive, setIsDeadlineActive] = useState(false);
 
