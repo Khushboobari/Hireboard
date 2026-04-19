@@ -48,6 +48,10 @@ const jobSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    salary: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );

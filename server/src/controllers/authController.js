@@ -27,7 +27,7 @@ exports.register = async (req, res) => {
 
     // Create token
     const token = jwt.sign(
-      { id: savedUser._id, role: savedUser.role },
+      { id: savedUser._id, role: savedUser.role, name: savedUser.name },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -58,7 +58,7 @@ exports.login = async (req, res) => {
 
     // Create token
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: user._id, role: user.role, name: user.name },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );

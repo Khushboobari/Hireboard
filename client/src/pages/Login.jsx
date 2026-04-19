@@ -57,6 +57,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@university.edu"
               required
+              autoComplete="email"
             />
           </div>
           <div>
@@ -68,6 +69,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
+              autoComplete="current-password"
             />
           </div>
           <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2 mt-6" disabled={isLoading}>

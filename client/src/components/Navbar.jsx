@@ -32,7 +32,10 @@ const Navbar = () => {
         {user ? (
           <>
             {isAdmin ? (
-              <Link to="/admin" className="font-medium text-slate-600 hover:text-primary-600 transition-colors">Dashboard</Link>
+               <>
+                 <Link to="/admin" className="font-medium text-slate-600 hover:text-primary-600 transition-colors">Dashboard</Link>
+                 <Link to="/jobs" className="font-medium text-slate-600 hover:text-primary-600 transition-colors">Jobs</Link>
+               </>
             ) : (
               <>
                 <Link to="/dashboard" className="hidden sm:block font-medium text-slate-600 hover:text-primary-600 transition-colors">Dashboard</Link>
@@ -40,14 +43,15 @@ const Navbar = () => {
 
                 {/* Companies dropdown via group hover */}
                 <div className="relative group hidden sm:block z-50">
-                  <div className="font-medium text-slate-600 group-hover:text-primary-600 transition-colors cursor-pointer py-2">
+                  <Link to="/jobs" className="font-medium text-slate-600 group-hover:text-primary-600 transition-colors cursor-pointer py-2">
                     Companies
-                  </div>
+                  </Link>
                   {/* Invisible bridge for hover continuity */}
                   <div className="absolute left-0 top-full pt-1 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                     <div className="bg-white border border-slate-100 shadow-xl rounded-2xl flex flex-col py-2 overflow-hidden">
-                      <Link to="/jobs" className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Explore Companies</Link>
-                      <Link to="/jobs" className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Research Companies</Link>
+                      <Link to="/jobs" state={{ search: 'Google' }} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Google Careers</Link>
+                      <Link to="/jobs" state={{ search: 'Meta' }} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Meta Careers</Link>
+                      <Link to="/jobs" state={{ search: 'Amazon' }} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Amazon Careers</Link>
                     </div>
                   </div>
                 </div>
@@ -64,7 +68,9 @@ const Navbar = () => {
                       <div className="max-h-64 overflow-y-auto">
                         {notifications.map((app, i) => (
                           <div key={i} className="px-4 py-3 border-b border-slate-50 text-sm">
-                            <span className="font-semibold text-slate-800">{app.jobId?.title || 'Job'}</span> application updated to <span className="font-bold text-primary-600 capitalize">{app.status}</span>.
+                            <span className="font-semibold text-slate-800">
+                              {app.jobId && typeof app.jobId === 'object' ? app.jobId.title : (app.jobTitle || 'Job')}
+                            </span> application updated to <span className="font-bold text-primary-600 capitalize">{app.status}</span>.
                           </div>
                         ))}
                         {notifications.length === 0 && <div className="px-4 py-6 text-center text-slate-500 text-sm">No new notifications.</div>}
@@ -94,8 +100,12 @@ const Navbar = () => {
             )}
             
             {isAdmin && (
-              <button onClick={onLogout} className="flex items-center gap-2 text-red-600 font-medium hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors">
-                <LogOut className="w-4 h-4" />
+              <button 
+                onClick={onLogout} 
+                className="flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded-full transition-all group"
+                title="Logout"
+              >
+                <LogOut className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </button>
             )}
           </>

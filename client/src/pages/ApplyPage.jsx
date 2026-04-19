@@ -73,7 +73,7 @@ const ApplyPage = () => {
       <Navbar />
       
       <main className="container mx-auto px-6 py-8 max-w-6xl">
-        <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-slate-500 hover:text-primary-600 mb-6 font-medium transition-colors">
+        <button onClick={() => navigate(`/jobs/${id}`)} className="flex items-center gap-1 text-slate-500 hover:text-primary-600 mb-6 font-medium transition-colors">
           <ChevronLeft className="w-4 h-4" /> Cancel Application
         </button>
 
@@ -157,7 +157,7 @@ const ApplyPage = () => {
                 {/* Cover Note Section */}
                 <div>
                   <div className="flex justify-between items-end mb-2">
-                    <label className="block text-sm font-bold text-slate-700">Cover Note <span className="text-rose-500">*</span></label>
+                    <label htmlFor="coverNote" className="block text-sm font-bold text-slate-700">Cover Note <span className="text-rose-500">*</span></label>
                     <button
                       type="button"
                       onClick={handleGenerate}
@@ -170,6 +170,7 @@ const ApplyPage = () => {
                   </div>
                   <p className="text-xs text-slate-500 mb-3">Explain why you're a great fit for this role. You can optionally use the AI tool to draft a template mapped to your skills.</p>
                   <textarea
+                    id="coverNote"
                     className="input-field min-h-[200px] resize-y w-full bg-slate-50 p-4 border-slate-200 focus:bg-white leading-relaxed"
                     placeholder="Dear Hiring Manager..."
                     value={coverNote}

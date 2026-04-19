@@ -69,7 +69,7 @@ const JobDetail = () => {
       
       <div className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-6 py-6">
-           <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-slate-500 hover:text-primary-600 font-medium transition-colors mb-4 group text-sm">
+           <button onClick={() => navigate('/jobs')} className="flex items-center gap-1 text-slate-500 hover:text-primary-600 font-medium transition-colors mb-4 group text-sm">
              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Opportunities
            </button>
 

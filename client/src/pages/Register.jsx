@@ -57,8 +57,9 @@ const Register = () => {
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+            <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
             <input
+              id="name"
               type="text"
               name="name"
               className="input-field"
@@ -66,11 +67,13 @@ const Register = () => {
               onChange={onChange}
               placeholder="John Doe"
               required
+              autoComplete="name"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
             <input
+              id="email"
               type="email"
               name="email"
               className="input-field"
@@ -78,18 +81,20 @@ const Register = () => {
               onChange={onChange}
               placeholder="you@university.edu"
               required
+              autoComplete="email"
             />
           </div>
           <div>
-             <label className="block text-sm font-medium text-slate-700 mb-1">Account Type</label>
-             <select name="role" value={role} onChange={onChange} className="input-field">
+             <label htmlFor="role" className="block text-sm font-medium text-slate-700 mb-1">Account Type</label>
+             <select id="role" name="role" value={role} onChange={onChange} className="input-field">
                <option value="student">Student</option>
                <option value="admin">Admin / Recruiter</option>
              </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">Password</label>
             <input
+              id="password"
               type="password"
               name="password"
               className="input-field"
@@ -97,6 +102,7 @@ const Register = () => {
               onChange={onChange}
               placeholder="••••••••"
               required
+              autoComplete="new-password"
             />
           </div>
           <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2 mt-6" disabled={isLoading}>

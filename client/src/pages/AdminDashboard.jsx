@@ -17,7 +17,8 @@ const AdminDashboard = () => {
   
   // Job Form State
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({ title: '', company: '', location: '', type: 'full-time', description: '', requirements: '', salary: '' });
+  const defaultDeadline = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const [formData, setFormData] = useState({ title: '', company: '', location: '', type: 'job', description: '', requirements: '', salary: '', deadline: defaultDeadline });
 
   useEffect(() => {
     dispatch(fetchAdminStats());
@@ -26,7 +27,7 @@ const AdminDashboard = () => {
 
   const handleCreateJobClick = () => {
     setIsEditing(false);
-    setFormData({ title: '', company: '', location: '', type: 'full-time', description: '', requirements: '', salary: '' });
+    setFormData({ title: '', company: '', location: '', type: 'job', description: '', requirements: '', salary: '', deadline: defaultDeadline });
     setActiveTab('jobForm');
   };
 
@@ -35,7 +36,8 @@ const AdminDashboard = () => {
     setSelectedJob(job);
     setFormData({
       title: job.title, company: job.company, location: job.location, type: job.type, 
-      description: job.description, requirements: job.requirements.join(', '), salary: job.salary || ''
+      description: job.description, requirements: job.requirements.join(', '), salary: job.salary || '',
+      deadline: job.deadline ? new Date(job.deadline).toISOString().split('T')[0] : defaultDeadline
     });
     setActiveTab('jobForm');
   };
@@ -63,7 +65,7 @@ const AdminDashboard = () => {
   };
 
   const renderTabs = () => (
-    <div className="flex border-b border-slate-200 mb-8 bg-white rounded-t-2xl px-6 pt-4 sticky top-0 z-10 shadow-sm">
+    <div className="flex border-b border-slate-200 mb-8 bg-white rounded-t-2xl px-6 pt-4 shadow-sm">
       <button 
         onClick={() => setActiveTab('overview')}
         className={`px-6 py-4 font-semibold flex items-center gap-2 border-b-2 transition-colors ${activeTab === 'overview' ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
@@ -201,8 +203,12 @@ const AdminDashboard = () => {
                 <div>
                   <label className="block text-sm font-semibold mb-2">Type</label>
                   <select className="input-field w-full" value={formData.type} onChange={e=>setFormData({...formData, type: e.target.value})}>
-                    <option value="full-time">Full-time</option><option value="internship">Internship</option><option value="part-time">Part-time</option>
+                    <option value="job">Full-time Job</option><option value="internship">Internship</option>
                   </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Application Deadline</label>
+                  <input required type="date" className="input-field w-full" value={formData.deadline} onChange={e=>setFormData({...formData, deadline: e.target.value})} />
                 </div>
               </div>
               <div><label className="block text-sm font-semibold mb-2">Salary (optional)</label><input className="input-field w-full" value={formData.salary} onChange={e=>setFormData({...formData, salary: e.target.value})} /></div>

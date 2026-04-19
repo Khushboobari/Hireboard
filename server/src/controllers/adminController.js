@@ -40,15 +40,17 @@ exports.getStats = async (req, res) => {
     // Populate job details
     const populatedAppsPerJob = await Job.populate(appPerJobAgg, { path: '_id', select: 'title company' });
 
-    const applicationsPerJob = populatedAppsPerJob.map(item => ({
-      id: item._id?._id,
-      title: item._id?.title || 'Unknown Job',
-      company: item._id?.company || '-',
-      total: item.total,
-      shortlisted: item.shortlisted,
-      rejected: item.rejected,
-      applied: item.applied
-    }));
+    const applicationsPerJob = populatedAppsPerJob
+      .filter(item => item && item._id) // Filter out nulls or invalid IDs
+      .map(item => ({
+        id: item._id?._id || 'unknown',
+        title: item._id?.title || 'Unknown Job',
+        company: item._id?.company || '-',
+        total: item.total || 0,
+        shortlisted: item.shortlisted || 0,
+        rejected: item.rejected || 0,
+        applied: item.applied || 0
+      }));
 
     res.status(200).json({
       totalJobs,
@@ -87,7 +89,18 @@ exports.generateCoverNote = async (req, res) => {
     res.status(200).json({ coverNote });
 
   } catch (error) {
-    console.error("Claude Error:", error);
-    res.status(500).json({ message: 'Error generating cover note with AI' });
+    console.error("Claude/AI Error:", error.message);
+    
+    // Fallback: Generate a professional template if AI fails
+    const { jobTitle, company } = req.body;
+    const userName = req.user?.name || 'Applicant';
+    
+    const fallbackNote = `Dear Hiring Manager,\n\nI am writing to express my strong interest in the ${jobTitle || 'position'} at ${company || 'your company'}. With my background and passion for this field, I am confident in my ability to contribute meaningfully to your team. I look forward to the opportunity to discuss my qualifications further.\n\nBest regards,\n${userName}`;
+    
+    res.status(200).json({ 
+      coverNote: fallbackNote,
+      isFallback: true,
+      message: 'AI Service currently unavailable. Using professional template.' 
+    });
   }
 };
