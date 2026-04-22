@@ -4,6 +4,7 @@ export const useAuth = () => {
   const { user, token } = useSelector((state) => state.auth);
 
   let isAdmin = false;
+  let isRecruiter = false;
   let isStudent = false;
 
   if (user) {

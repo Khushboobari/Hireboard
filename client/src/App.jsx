@@ -14,13 +14,14 @@ import ApplyPage from './pages/ApplyPage';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, isRecruiter } = useAuth();
+  const isManager = isAdmin || isRecruiter;
 
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={!user ? <Login /> : <Navigate to={isAdmin ? '/admin' : '/dashboard'} />} />
-      <Route path="/register" element={!user ? <Register /> : <Navigate to={isAdmin ? '/admin' : '/dashboard'} />} />
+      <Route path="/login" element={!user ? <Login /> : <Navigate to={isManager ? '/admin' : '/dashboard'} />} />
+      <Route path="/register" element={!user ? <Register /> : <Navigate to={isManager ? '/admin' : '/dashboard'} />} />
       
       {/* Protected Routes (Everyone) */}
       <Route element={<ProtectedRoute />}>
