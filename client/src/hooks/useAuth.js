@@ -8,8 +8,9 @@ export const useAuth = () => {
 
   if (user) {
     isAdmin = user.role === 'admin';
+    isRecruiter = user.role === 'recruiter';
     isStudent = user.role === 'student';
   }
 
-  return { user, token, isAdmin, isStudent };
+  return { user, token, isAdmin, isRecruiter, isStudent };
 };

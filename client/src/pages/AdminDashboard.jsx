@@ -6,11 +6,13 @@ import Navbar from '../components/Navbar';
 import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
 import { Briefcase, Activity, FileText, ArrowLeft, Plus, Trash2, Edit, Users, LayoutDashboard, Target } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
   const { stats, jobApplicants, isLoading: isAdminLoading } = useSelector(state => state.admin);
   const { listings: jobs, isLoading: isJobsLoading } = useSelector(state => state.job);
+  const { user, isAdmin, isRecruiter } = useAuth();
 
   const [activeTab, setActiveTab] = useState('overview'); // 'overview', 'jobs', 'applicants', 'jobForm'
   const [selectedJob, setSelectedJob] = useState(null);
@@ -18,16 +20,16 @@ const AdminDashboard = () => {
   // Job Form State
   const [isEditing, setIsEditing] = useState(false);
   const defaultDeadline = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-  const [formData, setFormData] = useState({ title: '', company: '', location: '', type: 'job', description: '', requirements: '', salary: '', deadline: defaultDeadline });
+  const [formData, setFormData] = useState({ title: '', company: '', location: '', city: '', locationDetail: '', type: 'job', description: '', requirements: '', salary: '', deadline: defaultDeadline });
 
   useEffect(() => {
     dispatch(fetchAdminStats());
-    dispatch(fetchJobs()); // For admins, this route gets all jobs including inactive
+    dispatch(fetchJobs()); // For recruiters/admins, this gets their/all jobs
   }, [dispatch]);
 
   const handleCreateJobClick = () => {
     setIsEditing(false);
-    setFormData({ title: '', company: '', location: '', type: 'job', description: '', requirements: '', salary: '', deadline: defaultDeadline });
+    setFormData({ title: '', company: '', location: '', city: '', locationDetail: '', type: 'job', description: '', requirements: '', salary: '', deadline: defaultDeadline });
     setActiveTab('jobForm');
   };
 
@@ -35,7 +37,7 @@ const AdminDashboard = () => {
     setIsEditing(true);
     setSelectedJob(job);
     setFormData({
-      title: job.title, company: job.company, location: job.location, type: job.type, 
+      title: job.title, company: job.company, location: job.location, city: job.city || '', locationDetail: job.locationDetail || '', type: job.type, 
       description: job.description, requirements: job.requirements.join(', '), salary: job.salary || '',
       deadline: job.deadline ? new Date(job.deadline).toISOString().split('T')[0] : defaultDeadline
     });
@@ -70,13 +72,13 @@ const AdminDashboard = () => {
         onClick={() => setActiveTab('overview')}
         className={`px-6 py-4 font-semibold flex items-center gap-2 border-b-2 transition-colors ${activeTab === 'overview' ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
       >
-        <LayoutDashboard className="w-5 h-5" /> Overview
+        <LayoutDashboard className="w-5 h-5" /> {isAdmin ? 'System Overview' : 'My Overview'}
       </button>
       <button 
         onClick={() => setActiveTab('jobs')}
         className={`px-6 py-4 font-semibold flex items-center gap-2 border-b-2 transition-colors ${['jobs', 'jobForm'].includes(activeTab) ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
       >
-        <Briefcase className="w-5 h-5" /> Manage Jobs
+        <Briefcase className="w-5 h-5" /> {isAdmin ? 'Manage All Jobs' : 'My Listings'}
       </button>
       {activeTab === 'applicants' && (
         <button className="px-6 py-4 font-semibold flex items-center gap-2 border-b-2 border-indigo-600 text-indigo-600">
@@ -104,7 +106,7 @@ const AdminDashboard = () => {
 
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
               <div className="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
-                <h3 className="text-lg font-bold text-slate-800">Applications per Job</h3>
+                <h3 className="text-lg font-bold text-slate-800">{isAdmin ? 'Applications per Job' : 'My Performance'}</h3>
               </div>
               <div className="p-6 overflow-x-auto">
                 <table className="w-full text-left">
@@ -140,7 +142,7 @@ const AdminDashboard = () => {
         {activeTab === 'jobs' && (
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
             <div className="px-6 py-4 flex justify-between items-center border-b border-slate-100">
-              <h3 className="text-lg font-bold text-slate-800">Job Listings</h3>
+              <h3 className="text-lg font-bold text-slate-800">{isAdmin ? 'All Job Listings' : 'My Published Jobs'}</h3>
               <button onClick={handleCreateJobClick} className="btn-primary py-2 px-4 flex items-center gap-2">
                 <Plus className="w-4 h-4"/> Create Job
               </button>
@@ -160,7 +162,7 @@ const AdminDashboard = () => {
                     <tr key={job._id} className="hover:bg-slate-50/50 transition-colors">
                       <td className="p-4">
                         <div className="font-semibold text-slate-800">{job.title}</div>
-                        <div className="text-sm text-slate-500">{job.company} • {job.location}</div>
+                        <div className="text-sm text-slate-500">{job.company} • {job.city}, {job.location}</div>
                       </td>
                       <td className="p-4">
                         <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold uppercase">{job.type}</span>
@@ -199,7 +201,9 @@ const AdminDashboard = () => {
               <div className="grid grid-cols-2 gap-6">
                 <div><label className="block text-sm font-semibold mb-2">Title</label><input required className="input-field w-full" value={formData.title} onChange={e=>setFormData({...formData, title: e.target.value})} /></div>
                 <div><label className="block text-sm font-semibold mb-2">Company</label><input required className="input-field w-full" value={formData.company} onChange={e=>setFormData({...formData, company: e.target.value})} /></div>
-                <div><label className="block text-sm font-semibold mb-2">Location</label><input required className="input-field w-full" value={formData.location} onChange={e=>setFormData({...formData, location: e.target.value})} /></div>
+                <div><label className="block text-sm font-semibold mb-2">Location/Region (e.g. California, USA)</label><input required className="input-field w-full" value={formData.location} onChange={e=>setFormData({...formData, location: e.target.value})} /></div>
+                <div><label className="block text-sm font-semibold mb-2">City</label><input required className="input-field w-full" value={formData.city} onChange={e=>setFormData({...formData, city: e.target.value})} /></div>
+                <div><label className="block text-sm font-semibold mb-2">Specific Location Detail (e.g. Office Name)</label><input className="input-field w-full" value={formData.locationDetail} onChange={e=>setFormData({...formData, locationDetail: e.target.value})} /></div>
                 <div>
                   <label className="block text-sm font-semibold mb-2">Type</label>
                   <select className="input-field w-full" value={formData.type} onChange={e=>setFormData({...formData, type: e.target.value})}>

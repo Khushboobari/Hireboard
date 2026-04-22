@@ -23,6 +23,14 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    city: {
+      type: String,
+      required: true,
+    },
+    locationDetail: {
+      type: String,
+      default: '',
+    },
     deadline: {
       type: Date,
       required: true,

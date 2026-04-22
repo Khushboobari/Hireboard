@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser, reset } from '../features/auth/authSlice';
 
 const Navbar = () => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, isRecruiter } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
   const [showNotifs, setShowNotifs] = useState(false);
   
+  const isManager = isAdmin || isRecruiter;
+
   const { myApplications } = useSelector(state => state.application);
   const notifications = myApplications?.filter(app => app.status !== 'Applied' && app.status !== 'applied') || [];
 
@@ -31,10 +33,10 @@ const Navbar = () => {
       <div className="flex gap-4 sm:gap-6 items-center">
         {user ? (
           <>
-            {isAdmin ? (
+            {isManager ? (
                <>
-                 <Link to="/admin" className="font-medium text-slate-600 hover:text-primary-600 transition-colors">Dashboard</Link>
-                 <Link to="/jobs" className="font-medium text-slate-600 hover:text-primary-600 transition-colors">Jobs</Link>
+                 <Link to="/admin" className="font-medium text-slate-600 hover:text-primary-600 transition-colors uppercase text-[11px] tracking-widest font-bold">{isAdmin ? 'Admin Panel' : 'Recruiter Panel'}</Link>
+                 <Link to="/jobs" className="font-medium text-slate-600 hover:text-primary-600 transition-colors text-sm">Job Catalog</Link>
                </>
             ) : (
               <>
@@ -99,7 +101,7 @@ const Navbar = () => {
               </>
             )}
             
-            {isAdmin && (
+            {isManager && (
               <button 
                 onClick={onLogout} 
                 className="flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded-full transition-all group"

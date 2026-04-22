@@ -86,10 +86,11 @@ const Register = () => {
           </div>
           <div>
              <label htmlFor="role" className="block text-sm font-medium text-slate-700 mb-1">Account Type</label>
-             <select id="role" name="role" value={role} onChange={onChange} className="input-field">
-               <option value="student">Student</option>
-               <option value="admin">Admin / Recruiter</option>
-             </select>
+              <select id="role" name="role" value={role} onChange={onChange} className="input-field font-semibold">
+                <option value="student">Student Account (Apply for jobs)</option>
+                <option value="recruiter">Recruiter Account (Post & manage jobs)</option>
+                <option value="admin">System Admin</option>
+              </select>
           </div>
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">Password</label>

@@ -24,9 +24,14 @@ exports.getAllJobs = async (req, res) => {
       query.deadline = { $gte: new Date() };
     }
 
-    // If an admin is requesting, they might want to see all jobs, even inactive ones.
-    if (req.user && req.user.role === 'admin') {
-      delete query.isActive;
+    // Role-based filtering
+    if (req.user) {
+      if (req.user.role === 'admin') {
+        delete query.isActive; // Admin sees all jobs
+      } else if (req.user.role === 'recruiter') {
+        delete query.isActive; // Recruiter sees all their jobs (including inactive)
+        query.postedBy = req.user.id;
+      }
     }
 
     const jobs = await Job.find(query).sort({ createdAt: -1 }).populate('postedBy', 'name');

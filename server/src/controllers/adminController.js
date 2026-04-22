@@ -5,13 +5,27 @@ const Anthropic = require('@anthropic-ai/sdk');
 
 exports.getStats = async (req, res) => {
   try {
-    const totalJobs = await Job.countDocuments();
-    const activeJobs = await Job.countDocuments({ isActive: true });
-    const totalApplications = await Application.countDocuments();
+    let jobQuery = {};
+    let appQuery = {};
+
+    // If recruiter, scope everything to their jobs
+    if (req.user && req.user.role === 'recruiter') {
+      jobQuery.postedBy = req.user.id;
+      
+      // Get IDs of jobs posted by this recruiter to filter applications
+      const recruiterJobs = await Job.find({ postedBy: req.user.id }).select('_id');
+      const jobIds = recruiterJobs.map(j => j._id);
+      appQuery.jobId = { $in: jobIds };
+    }
+
+    const totalJobs = await Job.countDocuments(jobQuery);
+    const activeJobs = await Job.countDocuments({ ...jobQuery, isActive: true });
+    const totalApplications = await Application.countDocuments(appQuery);
     const totalStudents = await User.countDocuments({ role: 'student' });
     
     // Aggregation 1: Group by status to calculate Shortlist Rate
     const statusStats = await Application.aggregate([
+      { $match: appQuery },
       { $group: { _id: "$status", count: { $sum: 1 } } }
     ]);
 
@@ -25,6 +39,7 @@ exports.getStats = async (req, res) => {
 
     // Aggregation 2: Applications per job with status breakdown
     const appPerJobAgg = await Application.aggregate([
+      { $match: appQuery },
       {
         $group: {
           _id: "$jobId",
