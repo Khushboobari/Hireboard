@@ -15,7 +15,7 @@ const SavedJobs = () => {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
+    <div className="min-h-screen bg-slate-50 font-sans flex flex-col pt-24">
       <Navbar />
       
       <main className="flex-1 container mx-auto px-6 py-8">

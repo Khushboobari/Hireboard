@@ -22,10 +22,10 @@ const JobListings = () => {
   }, [dispatch, typeFilter, searchTerm, locationFilter, isDeadlineActive]);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col pt-24">
       <Navbar />
       
-      <main className="flex-1 container mx-auto px-6 py-8">
+      <main className="flex-1 container mx-auto px-6 pt-28 pb-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900">Explore Opportunities</h1>
           <p className="text-slate-500 mt-2 text-lg">Find the best internships and entry-level jobs.</p>

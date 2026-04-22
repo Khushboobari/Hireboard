@@ -35,7 +35,7 @@ const StudentDashboard = () => {
   const recentApplications = [...myApplications].sort((a,b) => new Date(b.appliedAt) - new Date(a.appliedAt)).slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="min-h-screen bg-slate-50 font-sans pt-24">
       <Navbar />
       
       <main className="max-w-6xl mx-auto px-6 py-8">

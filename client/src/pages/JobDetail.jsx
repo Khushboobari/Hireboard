@@ -53,7 +53,7 @@ const JobDetail = () => {
   };
 
   if (!job) return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-slate-50 font-sans pt-24 text-slate-900">
       <Navbar />
       <div className="flex-1 flex justify-center items-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
