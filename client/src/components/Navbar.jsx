@@ -206,8 +206,8 @@ const Navbar = () => {
                     className="flex items-center gap-2 p-1 pl-3 pr-2 border-2 border-slate-100 rounded-full transition-all bg-white hover:border-primary-200 hover:shadow-md outline-none"
                   >
                     <div className="text-right hidden sm:block">
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-tighter leading-none mb-0.5">{user.role}</p>
-                      <p className="text-xs font-bold text-slate-700 leading-none">{user.name?.split(' ')[0]}</p>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-tighter leading-none mb-0.5">{user?.role || 'User'}</p>
+                      <p className="text-xs font-bold text-slate-700 leading-none">{user?.name?.split(' ')[0] || 'Member'}</p>
                     </div>
                     <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
                       <UserCircle className="w-6 h-6" />

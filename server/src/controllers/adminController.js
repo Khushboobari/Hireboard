@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Job = require('../models/Job');
 const Application = require('../models/Application');
 const User = require('../models/User');
@@ -10,11 +11,12 @@ exports.getStats = async (req, res) => {
 
     // If recruiter, scope everything to their jobs
     if (req.user && req.user.role === 'recruiter') {
-      jobQuery.postedBy = req.user.id;
+      const recruiterId = new mongoose.Types.ObjectId(req.user.id);
+      jobQuery.postedBy = recruiterId;
       
       // Get IDs of jobs posted by this recruiter to filter applications
-      const recruiterJobs = await Job.find({ postedBy: req.user.id }).select('_id');
-      const jobIds = recruiterJobs.map(j => j._id);
+      const recruiterJobs = await Job.find({ postedBy: recruiterId }).select('_id');
+      const jobIds = recruiterJobs.map(j => new mongoose.Types.ObjectId(j._id));
       appQuery.jobId = { $in: jobIds };
     }
 

@@ -39,7 +39,9 @@ const AdminDashboard = () => {
     setFormData({
       title: job.title, company: job.company, location: job.location, city: job.city || '', locationDetail: job.locationDetail || '', type: job.type, 
       description: job.description, requirements: job.requirements.join(', '), salary: job.salary || '',
-      deadline: job.deadline ? new Date(job.deadline).toISOString().split('T')[0] : defaultDeadline
+      deadline: (job.deadline && !isNaN(new Date(job.deadline))) 
+        ? new Date(job.deadline).toISOString().split('T')[0] 
+        : defaultDeadline
     });
     setActiveTab('jobForm');
   };
