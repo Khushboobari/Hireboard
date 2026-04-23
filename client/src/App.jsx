@@ -6,7 +6,7 @@ import Register from './pages/Register';
 import JobListings from './pages/JobListings';
 import JobDetail from './pages/JobDetail';
 import MyApplications from './pages/MyApplications';
-import StudentDashboard from './pages/StudentDashboard';
+
 import SavedJobs from './pages/SavedJobs';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
@@ -23,12 +23,11 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={!user ? <Login /> : <Navigate to={isManager ? '/admin' : '/dashboard'} />} />
-      <Route path="/register" element={!user ? <Register /> : <Navigate to={isManager ? '/admin' : '/dashboard'} />} />
+      <Route path="/login" element={!user ? <Login /> : <Navigate to={isManager ? '/admin' : '/jobs'} />} />
+      <Route path="/register" element={!user ? <Register /> : <Navigate to={isManager ? '/admin' : '/jobs'} />} />
       
       {/* Protected Routes (Everyone) */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<StudentDashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/saved-jobs" element={<SavedJobs />} />
         <Route path="/jobs" element={<JobListings />} />
