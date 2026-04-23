@@ -11,6 +11,22 @@ const companiesList = [
   'Swiggy', 'Razorpay', 'CRED'
 ];
 
+const companyLogos = {
+  'Google': 'https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png',
+  'Meta': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Meta_Platforms_Inc._logo.svg/2560px-Meta_Platforms_Inc._logo.svg.png',
+  'Amazon': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png',
+  'Microsoft': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/2560px-Microsoft_logo_%282012%29.svg.png',
+  'Apple': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1665px-Apple_logo_black.svg.png',
+  'TCS': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Tata_Consultancy_Services_Logo.svg/2560px-Tata_Consultancy_Services_Logo.svg.png',
+  'Infosys': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Infosys_logo.svg/2560px-Infosys_logo.svg.png',
+  'Wipro': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Wipro_Logo.svg/2560px-Wipro_Logo.svg.png',
+  'Flipkart': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flipkart_logo.svg/2560px-Flipkart_logo.svg.png',
+  'Zomato': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Zomato_Logo.svg/2560px-Zomato_Logo.svg.png',
+  'Swiggy': 'https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Swiggy_logo.svg/1200px-Swiggy_logo.svg.png',
+  'Razorpay': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Razorpay_logo.svg/2560px-Razorpay_logo.svg.png',
+  'CRED': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Cred_logo.png/220px-Cred_logo.png'
+};
+
 const roles = [
   { title: 'Frontend Developer', type: 'job' },
   { title: 'Backend Developer', type: 'job' },
@@ -55,6 +71,7 @@ const seedJobsDetailed = async () => {
           city: company === 'Google' ? 'Mountain View' : company === 'TCS' ? 'Mumbai' : 'Bangalore',
           locationDetail: `${company} Tech Park`,
           salary: role.type === 'internship' ? '₹40,000 - ₹80,000 / Month' : '₹12,00,000 - ₹45,00,000 / Year',
+          logo: companyLogos[company] || '',
           deadline: new Date(new Date().setMonth(new Date().getMonth() + 2)),
           isActive: true,
           postedBy: adminUser._id,

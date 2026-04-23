@@ -76,8 +76,12 @@ const JobDetail = () => {
  
            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               <div className="flex items-start gap-5">
-                 <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-3xl font-bold text-primary-600 shadow-sm">
-                    {job.company.charAt(0)}
+                 <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-3 shadow-sm overflow-hidden">
+                    {job.logo ? (
+                      <img src={job.logo} alt={job.company} className="w-full h-full object-contain" />
+                    ) : (
+                      <span className="text-3xl font-bold text-primary-600">{job.company.charAt(0)}</span>
+                    )}
                  </div>
                  <div>
                     <div className="flex items-center gap-3 mb-1">
