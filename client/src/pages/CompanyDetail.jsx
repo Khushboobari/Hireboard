@@ -63,7 +63,7 @@ const CompanyDetail = () => {
             <Loader2 className="w-10 h-10 text-primary-500 animate-spin" />
           </div>
         ) : listings.length > 0 ? (
-          listings.map(job => <JobCard key={job._id} job={job} />)
+          listings.map(job => <JobCard key={job._id} job={job} showLogo={true} />)
         ) : (
           <div className="col-span-2 text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm">
             <Briefcase className="w-12 h-12 text-slate-200 mx-auto mb-4" />
