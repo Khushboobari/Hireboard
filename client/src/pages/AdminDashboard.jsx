@@ -164,7 +164,7 @@ const AdminDashboard = () => {
                     <tr key={job._id} className="hover:bg-slate-50/50 transition-colors">
                       <td className="p-4">
                         <div className="font-semibold text-slate-800">{job.title}</div>
-                        <div className="text-sm text-slate-500">{job.company} • {job.city}, {job.location}</div>
+                        <div className="text-sm text-slate-500">{job.company} • {job.city || job.location ? `${job.city || ''}${job.city && job.location ? ', ' : ''}${job.location || ''}` : 'Location not specified'}</div>
                       </td>
                       <td className="p-4">
                         <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold uppercase">{job.type}</span>

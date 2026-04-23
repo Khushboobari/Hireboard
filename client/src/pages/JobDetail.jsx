@@ -69,7 +69,7 @@ const JobDetail = () => {
       <Navbar />
       
       <div className="bg-white border-b border-slate-200">
-        <div className="container mx-auto px-6 py-6">
+        <div className="container mx-auto px-6 pt-24 pb-6">
            <button onClick={() => navigate('/jobs')} className="flex items-center gap-1 text-slate-500 hover:text-primary-600 font-medium transition-colors mb-4 group text-sm">
              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Opportunities
            </button>
@@ -132,7 +132,7 @@ const JobDetail = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:hidden">
                 <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
                    <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600"><MapPin className="w-5 h-5"/></div>
-                   <div><p className="text-xs text-slate-400 font-bold uppercase">Location</p><p className="font-bold text-slate-800">{job.city}, {job.location}</p></div>
+                   <div><p className="text-xs text-slate-400 font-bold uppercase">Location</p><p className="font-bold text-slate-800">{job.city || job.location ? `${job.city || ''}${job.city && job.location ? ', ' : ''}${job.location || ''}` : 'Location not specified'}</p></div>
                 </div>
                 <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600"><Clock className="w-5 h-5"/></div>
@@ -230,7 +230,7 @@ const JobDetail = () => {
                     <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0"><MapPin className="w-5 h-5"/></div>
                     <div>
                       <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Location</p>
-                      <p className="font-extrabold text-slate-800">{job.city}, {job.location}</p>
+                      <p className="font-extrabold text-slate-800">{job.city || job.location ? `${job.city || ''}${job.city && job.location ? ', ' : ''}${job.location || ''}` : 'Location not specified'}</p>
                       {job.locationDetail && <p className="text-[10px] text-slate-500 font-medium italic mt-0.5">{job.locationDetail}</p>}
                     </div>
                  </div>

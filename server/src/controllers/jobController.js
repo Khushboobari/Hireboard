@@ -12,12 +12,30 @@ exports.getAllJobs = async (req, res) => {
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: 'i' } },
-        { company: { $regex: search, $options: 'i' } }
+        { company: { $regex: search, $options: 'i' } },
+        { location: { $regex: search, $options: 'i' } },
+        { city: { $regex: search, $options: 'i' } }
       ];
     }
 
     if (location) {
-      query.location = { $regex: location, $options: 'i' };
+      // If $or already exists from search, we need to wrap it in an $and
+      const locationQuery = {
+        $or: [
+          { location: { $regex: location, $options: 'i' } },
+          { city: { $regex: location, $options: 'i' } }
+        ]
+      };
+      
+      if (query.$or) {
+        query.$and = [
+          { $or: query.$or },
+          locationQuery
+        ];
+        delete query.$or;
+      } else {
+        query.$or = locationQuery.$or;
+      }
     }
 
     if (isDeadlineActive === 'true') {

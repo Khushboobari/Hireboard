@@ -14,18 +14,17 @@ const JobListings = () => {
   const { isAdmin } = useAuth();
   const [searchTerm, setSearchTerm] = useState(location.state?.search || '');
   const [typeFilter, setTypeFilter] = useState(location.state?.type || '');
-  const [locationFilter, setLocationFilter] = useState('');
   const [isDeadlineActive, setIsDeadlineActive] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchJobs({ search: searchTerm, type: typeFilter, location: locationFilter, isDeadlineActive }));
-  }, [dispatch, typeFilter, searchTerm, locationFilter, isDeadlineActive]);
+    dispatch(fetchJobs({ search: searchTerm, type: typeFilter, isDeadlineActive }));
+  }, [dispatch, typeFilter, searchTerm, isDeadlineActive]);
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col pt-24">
       <Navbar />
       
-      <main className="flex-1 container mx-auto px-6 pt-28 pb-12">
+      <main className="flex-1 container mx-auto px-6 pt-10 pb-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900">Explore Opportunities</h1>
           <p className="text-slate-500 mt-2 text-lg">Find the best internships and entry-level jobs.</p>
@@ -42,16 +41,6 @@ const JobListings = () => {
                 className="input-field pl-10 bg-slate-50 w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div className="relative flex-1">
-              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
-              <input 
-                type="text" 
-                placeholder="City, State, or Remote..." 
-                className="input-field pl-10 bg-slate-50 w-full"
-                value={locationFilter}
-                onChange={(e) => setLocationFilter(e.target.value)}
               />
             </div>
             <div className="relative w-full sm:w-48">

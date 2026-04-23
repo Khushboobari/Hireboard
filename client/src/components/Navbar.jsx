@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, Briefcase, Bell, UserCircle, Bookmark, ChevronDown, Sparkles, Inbox, Search } from 'lucide-react';
+import { LogOut, Briefcase, Bell, UserCircle, Bookmark, ChevronDown, Sparkles, Inbox, Search, Menu, X } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser, reset } from '../features/auth/authSlice';
@@ -18,6 +18,7 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   
   const isManager = isAdmin || isRecruiter;
   const { myApplications } = useSelector(state => state.application);
@@ -184,6 +185,45 @@ const Navbar = () => {
               </div>
               
               <div className="flex items-center gap-2">
+                {/* Mobile Hamburger Menu */}
+                <div className="relative md:hidden">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowMobileMenu(!showMobileMenu)}
+                    className={`p-2.5 transition-colors ${showMobileMenu ? 'text-primary-600 bg-primary-50 rounded-full' : 'text-slate-400 hover:text-slate-800'}`}
+                  >
+                    {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {showMobileMenu && (
+                      <motion.div
+                        variants={dropdownVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        className="absolute left-0 mt-4 w-48 bg-white border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-2xl overflow-hidden z-50 py-2"
+                      >
+                        <Link
+                          to="/jobs"
+                          onClick={() => setShowMobileMenu(false)}
+                          className="flex items-center gap-3 px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-primary-600 transition-all"
+                        >
+                          <Briefcase className="w-4 h-4" /> Jobs
+                        </Link>
+                        <Link
+                          to="/companies"
+                          onClick={() => setShowMobileMenu(false)}
+                          className="flex items-center gap-3 px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-primary-600 transition-all"
+                        >
+                          <Sparkles className="w-4 h-4 text-amber-500" /> Companies
+                        </Link>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 {/* Search Toggle */}
                 <div className="relative flex items-center">
                   <AnimatePresence>

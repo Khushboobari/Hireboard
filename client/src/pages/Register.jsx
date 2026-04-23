@@ -35,7 +35,7 @@ const Register = () => {
     if (isError) alert(message);
     if (isSuccess || user) {
       const isManager = user?.role === 'admin' || user?.role === 'recruiter';
-      navigate(isManager ? '/admin' : '/dashboard');
+      navigate(isManager ? '/admin' : '/jobs');
       dispatch(reset());
     }
   }, [user, isError, isSuccess, message, navigate, dispatch]);
