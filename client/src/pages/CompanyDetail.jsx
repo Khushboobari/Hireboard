@@ -143,7 +143,7 @@ const CompanyDetail = () => {
           
           <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-10">
             <div className="w-32 h-32 bg-white rounded-3xl flex items-center justify-center p-6 shadow-2xl shadow-slate-100 border border-slate-50">
-              <img src={company.logo} alt={company.name} className="max-w-full max-h-full object-contain" />
+               <span className="text-5xl font-black text-primary-600">{company.name.charAt(0)}</span>
             </div>
             
             <div className="flex-1 text-center md:text-left">

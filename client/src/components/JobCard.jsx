@@ -31,11 +31,7 @@ const JobCard = ({ job, role = 'student' }) => {
         <div className="flex justify-between items-start mb-5 pr-8">
           <div className="flex gap-4">
             <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center p-2 shrink-0 group-hover:bg-white transition-colors overflow-hidden">
-               {job.logo ? (
-                 <img src={job.logo} alt={job.company} className="w-full h-full object-contain" />
-               ) : (
-                 <span className="text-xl font-bold text-primary-600">{job.company.charAt(0)}</span>
-               )}
+               <span className="text-xl font-bold text-primary-600">{job.company.charAt(0)}</span>
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1.5">
