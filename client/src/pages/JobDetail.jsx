@@ -17,6 +17,7 @@ import {
   Target,
   Users
 } from 'lucide-react';
+import ResumeMatcher from '../components/ResumeMatcher';
 
 const JobDetail = () => {
   const { id } = useParams();
@@ -217,6 +218,10 @@ const JobDetail = () => {
 
           {/* Sidebar Column */}
           <div className="lg:col-span-4 space-y-6">
+            {!isApplied && user?.role === 'student' && (
+              <ResumeMatcher jobTitle={job.title} requirements={job.requirements} />
+            )}
+            
             <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200 p-6 sticky top-24">
               <h4 className="font-extrabold text-slate-900 mb-6 text-lg">Opportunity Snapshot</h4>
               

@@ -41,7 +41,8 @@ const Navbar = () => {
       ]
     : [
         { name: 'Dashboard', path: '/dashboard' },
-        { name: 'Jobs', path: '/jobs' }
+        { name: 'Jobs', path: '/jobs' },
+        { name: 'Interview Prep', path: '/interview-prep' }
       ];
 
   const dropdownVariants = {
