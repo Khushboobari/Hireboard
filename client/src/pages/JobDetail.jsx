@@ -73,7 +73,7 @@ const JobDetail = () => {
            <button onClick={() => navigate('/jobs')} className="flex items-center gap-1 text-slate-500 hover:text-primary-600 font-medium transition-colors mb-4 group text-sm">
              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Opportunities
            </button>
-
+ 
            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               <div className="flex items-start gap-5">
                  <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-3xl font-bold text-primary-600 shadow-sm">

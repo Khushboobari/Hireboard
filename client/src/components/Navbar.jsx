@@ -113,7 +113,7 @@ const Navbar = () => {
                     to={link.path}
                     className="relative group px-5 py-2.5"
                   >
-                    <span className={`text-sm font-black transition-all duration-300 relative z-10 ${
+                    <span className={`text-[15px] font-black transition-all duration-300 relative z-10 ${
                       location.pathname === link.path ? 'text-slate-900' : 'text-slate-400 group-hover:text-slate-800'
                     }`}>
                       {link.name}
@@ -134,8 +134,8 @@ const Navbar = () => {
                     onMouseEnter={() => setShowCompanies(true)}
                     onMouseLeave={() => setShowCompanies(false)}
                   >
-                    <div className={`flex items-center gap-1.5 text-sm font-black transition-all duration-300 ${showCompanies ? 'text-slate-800' : 'text-slate-400'}`}>
-                      Companies <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-500 ${showCompanies ? 'rotate-180' : ''}`} />
+                    <div className={`flex items-center gap-1.5 text-[15px] font-black transition-all duration-300 ${showCompanies ? 'text-slate-800' : 'text-slate-400'}`}>
+                      Companies <ChevronDown className={`w-4 h-4 transition-transform duration-500 ${showCompanies ? 'rotate-180' : ''}`} />
                     </div>
                     <AnimatePresence>
                       {showCompanies && (
@@ -159,7 +159,7 @@ const Navbar = () => {
                                   <Link 
                                     key={name} 
                                     to={`/companies/${name.toLowerCase()}`} 
-                                    className={`px-3 py-2 text-sm font-bold text-slate-500 rounded-xl transition-all hover:pl-5 hover:bg-slate-50 hover:text-slate-800`}
+                                    className={`px-3 py-2 text-[15px] font-bold text-slate-500 rounded-xl transition-all hover:pl-5 hover:bg-slate-50 hover:text-slate-800`}
                                   >
                                     {name}
                                   </Link>
@@ -169,10 +169,10 @@ const Navbar = () => {
                           ))}
 
                           <div className="col-span-3 mt-4 pt-5 border-t border-slate-50 flex justify-between items-center">
-                            <Link to="/companies" className="px-4 py-2 bg-slate-50 text-xs font-black text-slate-800 rounded-full hover:bg-slate-100 transition-all flex items-center gap-2">
-                              Explore All Directory <Sparkles className="w-3 h-3 text-amber-500" />
+                            <Link to="/companies" className="px-4 py-2 bg-slate-50 text-sm font-black text-slate-800 rounded-full hover:bg-slate-100 transition-all flex items-center gap-2">
+                              Explore All Directory <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                             </Link>
-                            <Link to="/jobs" className="text-xs font-black text-slate-400 hover:text-primary-600 transition-all">
+                            <Link to="/jobs" className="text-sm font-black text-slate-400 hover:text-primary-600 transition-all">
                               Top Hiring Now 🔥
                             </Link>
                           </div>
@@ -201,7 +201,7 @@ const Navbar = () => {
                           onKeyDown={handleSearch}
                           placeholder="Search Student ID or Job..."
                           autoFocus
-                          className="bg-slate-50 border border-slate-100 rounded-full px-4 py-1.5 text-xs font-bold text-slate-800 outline-none focus:border-primary-300 w-full ml-2"
+                          className="bg-slate-50 border border-slate-100 rounded-full px-4 py-1.5 text-sm font-bold text-slate-800 outline-none focus:border-primary-300 w-full ml-2"
                         />
                       </motion.div>
                     )}
@@ -247,16 +247,16 @@ const Navbar = () => {
                         className="absolute right-0 mt-5 w-80 bg-white border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[28px] overflow-hidden z-50"
                       >
                         <div className="px-6 py-5 bg-slate-50/50 border-b border-slate-50 flex justify-between items-center">
-                          <span className="font-black text-slate-800 text-xs uppercase tracking-widest flex items-center gap-2">
+                          <span className="font-black text-slate-800 text-sm uppercase tracking-widest flex items-center gap-2">
                              <Inbox className="w-4 h-4 text-primary-500" /> Notifications
                           </span>
-                          <span className="bg-primary-600 text-white px-2.5 py-0.5 rounded-full text-[9px] font-black">{notifications.length}</span>
+                          <span className="bg-primary-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-black">{notifications.length}</span>
                         </div>
                         <div className="max-h-80 overflow-y-auto">
                           {notifications.map((app, i) => (
                             <div key={i} className="px-6 py-4 border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer group">
-                              <p className="text-sm text-slate-500 leading-tight group-hover:text-slate-700 transition-colors">
-                                Your application for <span className="font-black text-slate-800">{app.jobId?.title || 'Role'}</span> updated to <span className="font-black text-primary-600 uppercase text-[10px] bg-primary-50 px-1.5 py-0.5 rounded ml-1">{app.status}</span>
+                              <p className="text-[15px] text-slate-500 leading-tight group-hover:text-slate-700 transition-colors">
+                                Your application for <span className="font-black text-slate-800">{app.jobId?.title || 'Role'}</span> updated to <span className="font-black text-primary-600 uppercase text-[11px] bg-primary-50 px-1.5 py-0.5 rounded ml-1">{app.status}</span>
                               </p>
                             </div>
                           ))}
@@ -265,7 +265,7 @@ const Navbar = () => {
                               <div className="w-14 h-14 bg-slate-50 rounded-full flex items-center justify-center text-slate-200">
                                 <Inbox className="w-7 h-7" />
                               </div>
-                              <p className="text-slate-400 text-sm font-bold">No new updates yet.</p>
+                              <p className="text-slate-400 text-base font-bold">No new updates yet.</p>
                             </div>
                           )}
                         </div>
@@ -287,14 +287,14 @@ const Navbar = () => {
                     }`}
                   >
                     <div className="text-right hidden sm:block">
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{user?.role || 'Member'}</p>
-                      <p className="text-xs font-black text-slate-800 leading-none">{user?.name?.split(' ')[0] || 'Member'}</p>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{user?.role || 'Member'}</p>
+                      <p className="text-sm font-black text-slate-800 leading-none">{user?.name?.split(' ')[0] || 'Member'}</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-slate-100 to-slate-200 border border-white shadow-sm flex items-center justify-center text-slate-500 overflow-hidden">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-slate-100 to-slate-200 border border-white shadow-sm flex items-center justify-center text-slate-500 overflow-hidden">
                        {user?.profilePicture ? (
                          <img src={user.profilePicture} alt="" className="w-full h-full object-cover" />
                        ) : (
-                         <UserCircle className="w-6 h-6" />
+                         <UserCircle className="w-7 h-7" />
                        )}
                     </div>
                   </motion.button>
@@ -309,29 +309,29 @@ const Navbar = () => {
                         className="absolute right-0 mt-3 w-64 bg-white border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[28px] flex flex-col py-3 overflow-hidden z-50"
                       >
                         <div className="px-6 py-4 border-b border-slate-50 mb-2">
-                          <p className="text-[10px] font-black text-primary-600 uppercase tracking-[0.2em] mb-1">Authenticated Account</p>
-                          <p className="text-sm font-black text-slate-800 truncate leading-tight">{user.name}</p>
-                          <p className="text-[11px] font-bold text-slate-400 truncate">{user.email}</p>
+                          <p className="text-[11px] font-black text-primary-600 uppercase tracking-[0.2em] mb-1">Authenticated Account</p>
+                          <p className="text-[15px] font-black text-slate-800 truncate leading-tight">{user.name}</p>
+                          <p className="text-xs font-bold text-slate-400 truncate">{user.email}</p>
                         </div>
-                        <Link to="/profile" className="px-6 py-3 text-sm font-bold text-slate-500 hover:bg-slate-50 hover:text-primary-600 flex items-center gap-3 transition-all">
-                          <div className="p-1.5 bg-slate-50 rounded-lg group-hover:bg-primary-50 transition-colors"><UserCircle className="w-4 h-4"/></div> My Profile
+                        <Link to="/profile" className="px-6 py-3.5 text-[15px] font-bold text-slate-500 hover:bg-slate-50 hover:text-primary-600 flex items-center gap-3 transition-all">
+                          <div className="p-1.5 bg-slate-50 rounded-lg group-hover:bg-primary-50 transition-colors"><UserCircle className="w-5 h-5"/></div> My Profile
                         </Link>
                         {!isManager && (
                           <>
-                            <Link to="/saved-jobs" className="px-6 py-3 text-sm font-bold text-slate-500 hover:bg-slate-50 hover:text-primary-600 flex items-center gap-3 transition-all">
-                               <div className="p-1.5 bg-slate-50 rounded-lg"><Bookmark className="w-4 h-4"/></div> Saved Jobs
+                            <Link to="/saved-jobs" className="px-6 py-3.5 text-[15px] font-bold text-slate-500 hover:bg-slate-50 hover:text-primary-600 flex items-center gap-3 transition-all">
+                               <div className="p-1.5 bg-slate-50 rounded-lg"><Bookmark className="w-5 h-5"/></div> Saved Jobs
                             </Link>
-                            <Link to="/my-applications" className="px-6 py-3 text-sm font-bold text-slate-500 hover:bg-slate-50 hover:text-primary-600 flex items-center gap-3 transition-all">
-                               <div className="p-1.5 bg-slate-50 rounded-lg"><Briefcase className="w-4 h-4"/></div> My Applications
+                            <Link to="/my-applications" className="px-6 py-3.5 text-[15px] font-bold text-slate-500 hover:bg-slate-50 hover:text-primary-600 flex items-center gap-3 transition-all">
+                               <div className="p-1.5 bg-slate-50 rounded-lg"><Briefcase className="w-5 h-5"/></div> My Applications
                             </Link>
                           </>
                         )}
                         <div className="mt-3 pt-3 border-t border-slate-50">
                           <button 
                             onClick={onLogout} 
-                            className="px-6 py-3 text-sm font-bold text-rose-500 hover:bg-rose-50 flex items-center gap-3 transition-all w-full text-left"
+                            className="px-6 py-3.5 text-[15px] font-bold text-rose-500 hover:bg-rose-50 flex items-center gap-3 transition-all w-full text-left"
                           >
-                            <div className="p-1.5 bg-rose-50 rounded-lg"><LogOut className="w-4 h-4" /></div> Sign Out
+                            <div className="p-1.5 bg-rose-50 rounded-lg"><LogOut className="w-5 h-5" /></div> Sign Out
                           </button>
                         </div>
                       </motion.div>
@@ -342,8 +342,8 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="flex items-center gap-4">
-              <Link to="/login" className="font-black text-slate-500 hover:text-slate-800 transition-colors px-4 py-2 text-sm uppercase tracking-widest">Login</Link>
-              <Link to="/register" className="bg-slate-900 text-white shadow-xl shadow-slate-200 text-sm font-black py-3 px-8 rounded-2xl hover:bg-primary-600 hover:shadow-primary-200 transition-all active:scale-95">Get Started</Link>
+              <Link to="/login" className="font-black text-slate-500 hover:text-slate-800 transition-colors px-4 py-2 text-[15px] uppercase tracking-widest">Login</Link>
+              <Link to="/register" className="bg-slate-900 text-white shadow-xl shadow-slate-200 text-[15px] font-black py-3 px-8 rounded-2xl hover:bg-primary-600 hover:shadow-primary-200 transition-all active:scale-95">Get Started</Link>
             </div>
           )}
         </div>

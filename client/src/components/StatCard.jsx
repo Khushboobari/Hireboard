@@ -1,17 +1,23 @@
-import React from 'react'
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const StatCard = ({ title, value, icon: Icon, colorClass }) => {
+  const iconColor = colorClass.replace('bg-', 'text-');
+  
   return (
-    <div className="card p-6 flex items-center gap-4">
-      <div className={`p-4 rounded-xl ${colorClass} bg-opacity-10 flex-shrink-0`}>
-        <Icon className={`w-8 h-8 ${colorClass.replace('bg-', 'text-')}`} />
+    <motion.div 
+      whileHover={{ y: -5, shadow: "0 20px 40px rgba(0,0,0,0.05)" }}
+      className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm flex flex-col gap-6"
+    >
+      <div className={`w-14 h-14 rounded-2xl ${colorClass} bg-opacity-10 flex items-center justify-center ${iconColor}`}>
+        <Icon className="w-7 h-7" />
       </div>
       <div>
-        <h4 className="text-sm font-medium text-slate-500 uppercase tracking-wide">{title}</h4>
-        <p className="text-3xl font-bold text-slate-800 mt-1">{value}</p>
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">{title}</p>
+        <h4 className="text-4xl font-black text-slate-800 tracking-tighter">{value}</h4>
       </div>
-    </div>
-  )
+    </motion.div>
+  );
 }
 
-export default StatCard
+export default StatCard;

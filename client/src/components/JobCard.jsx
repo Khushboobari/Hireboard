@@ -29,25 +29,30 @@ const JobCard = ({ job, role = 'student' }) => {
       
       <div>
         <div className="flex justify-between items-start mb-5 pr-8">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              {new Date(job.createdAt) > new Date(Date.now() - 24 * 60 * 60 * 1000) && (
-                <span className="animate-pulse bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                  <Zap className="w-2.5 h-2.5" /> NEW
-                </span>
-              )}
-              {role === 'admin' ? (
-                <StatusBadge status={job.isActive ? 'Active' : 'Closed'} />
-              ) : (
-                <span className="px-2.5 py-0.5 bg-primary-50 text-primary-700 rounded-md text-[10px] font-bold uppercase tracking-wider border border-primary-100">
-                  {job.type}
-                </span>
-              )}
+          <div className="flex gap-4">
+            <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center p-2 shrink-0 group-hover:bg-white transition-colors overflow-hidden">
+               <span className="text-xl font-bold text-primary-600">{job.company.charAt(0)}</span>
             </div>
-            <h3 className="text-xl font-bold text-slate-900 group-hover:text-primary-600 transition-colors leading-snug line-clamp-1">{job.title}</h3>
-            <p className="text-slate-500 font-semibold text-sm flex items-center gap-1.5 mt-1.5">
-              <Building2 className="w-4 h-4 text-slate-400" /> {job.company}
-            </p>
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                {new Date(job.createdAt) > new Date(Date.now() - 24 * 60 * 60 * 1000) && (
+                  <span className="animate-pulse bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                    <Zap className="w-2.5 h-2.5" /> NEW
+                  </span>
+                )}
+                {role === 'admin' ? (
+                  <StatusBadge status={job.isActive ? 'Active' : 'Closed'} />
+                ) : (
+                  <span className="px-2.5 py-0.5 bg-primary-50 text-primary-700 rounded-md text-[10px] font-bold uppercase tracking-wider border border-primary-100">
+                    {job.type}
+                  </span>
+                )}
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 group-hover:text-primary-600 transition-colors leading-snug line-clamp-1">{job.title}</h3>
+              <p className="text-slate-500 font-semibold text-sm flex items-center gap-1.5 mt-1">
+                <Building2 className="w-4 h-4 text-slate-400" /> {job.company}
+              </p>
+            </div>
           </div>
         </div>
         
