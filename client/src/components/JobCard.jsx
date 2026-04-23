@@ -67,13 +67,21 @@ const JobCard = ({ job, role = 'student' }) => {
         </div>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 flex gap-3">
         <Link 
           to={`/jobs/${job._id}`} 
-          className="w-full text-center py-3.5 rounded-xl font-bold text-sm border-2 border-slate-100 text-slate-600 group-hover:border-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 block shadow-sm group-hover:shadow-lg group-hover:shadow-primary-600/20"
+          className="flex-1 text-center py-3.5 rounded-xl font-bold text-sm border-2 border-slate-100 text-slate-600 group-hover:border-slate-200 group-hover:bg-slate-50 transition-all duration-300 block shadow-sm"
         >
-          View Opportunities
+          Details
         </Link>
+        {role === 'student' && (
+          <Link 
+            to={`/jobs/${job._id}/apply`} 
+            className="flex-1 text-center py-3.5 rounded-xl font-bold text-sm bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-primary-200 transition-all duration-300"
+          >
+            Apply Now
+          </Link>
+        )}
       </div>
     </div>
   );

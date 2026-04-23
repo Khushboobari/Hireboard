@@ -5,19 +5,25 @@ import { fetchSavedJobs } from '../features/student/studentSlice';
 import Navbar from '../components/Navbar';
 import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
-import { FileText, CheckCircle, UserCircle, Briefcase, Building2, Calendar, Search, Bookmark, Target } from 'lucide-react';
+import { FileText, CheckCircle, UserCircle, Briefcase, Building2, Calendar, Search, Bookmark, Target, Heart, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { companies } from '../utils/companyData';
 
 const StudentDashboard = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth);
   const { myApplications, isLoading } = useSelector(state => state.application);
   const { savedJobs } = useSelector(state => state.student);
+  const [followedCompanyIds, setFollowedCompanyIds] = React.useState([]);
 
   useEffect(() => {
     dispatch(fetchMyApplications());
     dispatch(fetchSavedJobs());
+    const saved = JSON.parse(localStorage.getItem('followedCompanies') || '[]');
+    setFollowedCompanyIds(saved);
   }, [dispatch]);
+
+  const followedCompaniesList = companies.filter(c => followedCompanyIds.includes(c.id));
 
   const totalApplied = myApplications.length;
   const totalSaved = savedJobs?.length || 0;
@@ -82,6 +88,43 @@ const StudentDashboard = () => {
           <StatCard title="Saved Jobs" value={totalSaved} icon={Bookmark} colorClass="bg-rose-500" />
           <StatCard title="Profile Completion" value={`${completionPercent}%`} icon={UserCircle} colorClass="bg-indigo-500" />
         </div>
+
+        {/* FOLLOWED COMPANIES */}
+        {followedCompaniesList.length > 0 && (
+          <div className="mb-10">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <Heart className="w-5 h-5 text-rose-500 fill-current"/> Companies You Follow
+              </h3>
+              <Link to="/companies" className="text-primary-600 hover:text-primary-800 font-semibold text-sm flex items-center gap-1">
+                View All <ArrowRight className="w-4 h-4"/>
+              </Link>
+            </div>
+            <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
+              {followedCompaniesList.map(company => (
+                <Link 
+                  key={company.id} 
+                  to={`/companies/${company.name.toLowerCase()}`}
+                  className="min-w-[280px] bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center p-2">
+                      <img src={company.logo} alt={company.name} className="max-w-full max-h-full object-contain" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-800">{company.name}</h4>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{company.industry}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-black text-primary-600">{company.stats.openJobs} Open Roles</span>
+                    <span className="px-3 py-1 bg-slate-50 rounded-full text-[10px] font-bold text-slate-500">Hiring</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* RECENT APPLICATIONS */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">

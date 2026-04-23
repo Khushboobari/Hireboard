@@ -11,6 +11,8 @@ import SavedJobs from './pages/SavedJobs';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
 import ApplyPage from './pages/ApplyPage';
+import AllCompanies from './pages/AllCompanies';
+import CompanyDetail from './pages/CompanyDetail';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
         <Route path="/jobs/:id" element={<JobDetail />} />
         <Route path="/jobs/:id/apply" element={<ApplyPage />} />
         <Route path="/my-applications" element={<MyApplications />} />
+        <Route path="/companies" element={<AllCompanies />} />
+        <Route path="/companies/:companyName" element={<CompanyDetail />} />
         <Route path="/applications" element={<Navigate to="/my-applications" />} />
       </Route>
 

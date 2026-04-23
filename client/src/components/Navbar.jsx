@@ -124,11 +124,65 @@ const Navbar = () => {
                           initial="hidden"
                           animate="visible"
                           exit="exit"
-                          className="absolute left-0 mt-1 w-48 bg-white border border-slate-100 shadow-xl rounded-2xl flex flex-col py-2 overflow-hidden z-50"
+                          className="absolute left-0 mt-1 w-[480px] bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 grid grid-cols-3 gap-6 overflow-hidden z-50"
                         >
-                          <Link to="/jobs" state={{ search: 'Google' }} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-primary-600 transition-colors">Google Careers</Link>
-                          <Link to="/jobs" state={{ search: 'Meta' }} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-primary-600 transition-colors">Meta Careers</Link>
-                          <Link to="/jobs" state={{ search: 'Amazon' }} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-primary-600 transition-colors">Amazon Careers</Link>
+                          {/* Top Tech */}
+                          <div>
+                            <h4 className="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-3 px-2">Top Tech</h4>
+                            <div className="flex flex-col gap-1">
+                              {['Google', 'Meta', 'Amazon', 'Microsoft', 'Apple'].map(name => (
+                                <Link 
+                                  key={name} 
+                                  to={`/companies/${name.toLowerCase()}`} 
+                                  className="px-2 py-1.5 text-xs font-bold text-slate-600 hover:bg-primary-50 hover:text-primary-700 rounded-lg transition-colors"
+                                >
+                                  {name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Indian Companies */}
+                          <div>
+                            <h4 className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-3 px-2">Indian Tech</h4>
+                            <div className="flex flex-col gap-1">
+                              {['TCS', 'Infosys', 'Wipro', 'Flipkart', 'Zomato'].map(name => (
+                                <Link 
+                                  key={name} 
+                                  to={`/companies/${name.toLowerCase()}`} 
+                                  className="px-2 py-1.5 text-xs font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg transition-colors"
+                                >
+                                  {name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Startups */}
+                          <div>
+                            <h4 className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-3 px-2">Startups</h4>
+                            <div className="flex flex-col gap-1">
+                              {['Swiggy', 'Razorpay', 'CRED'].map(name => (
+                                <Link 
+                                  key={name} 
+                                  to={`/companies/${name.toLowerCase()}`} 
+                                  className="px-2 py-1.5 text-xs font-bold text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors"
+                                >
+                                  {name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Footer Links */}
+                          <div className="col-span-3 mt-2 pt-3 border-t border-slate-50 flex justify-between items-center px-2">
+                            <Link to="/companies" className="text-xs font-black text-primary-600 hover:text-primary-800 flex items-center gap-1 transition-colors">
+                              View All Companies →
+                            </Link>
+                            <Link to="/jobs" className="text-xs font-black text-slate-400 hover:text-slate-800 flex items-center gap-1 transition-colors">
+                              Top Hiring Now 🔥
+                            </Link>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
