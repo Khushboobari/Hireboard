@@ -14,6 +14,7 @@ import ApplyPage from './pages/ApplyPage';
 import AllCompanies from './pages/AllCompanies';
 import CompanyDetail from './pages/CompanyDetail';
 import InterviewPrep from './pages/InterviewPrep';
+import SearchPage from './pages/SearchPage';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/companies" element={<AllCompanies />} />
         <Route path="/companies/:companyName" element={<CompanyDetail />} />
         <Route path="/interview-prep" element={<InterviewPrep />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/applications" element={<Navigate to="/my-applications" />} />
       </Route>
 

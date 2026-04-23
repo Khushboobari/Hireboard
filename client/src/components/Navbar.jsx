@@ -15,6 +15,8 @@ const Navbar = () => {
   const [showNotifs, setShowNotifs] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showCompanies, setShowCompanies] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
   
   const isManager = isAdmin || isRecruiter;
@@ -31,6 +33,15 @@ const Navbar = () => {
     dispatch(logoutUser());
     dispatch(reset());
     navigate('/login');
+  };
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      // Redirect to search results or a specific profile if it's an ID
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setShowSearch(false);
+      setSearchQuery('');
+    }
   };
 
   const navLinks = isManager 
@@ -173,10 +184,37 @@ const Navbar = () => {
               </div>
               
               <div className="flex items-center gap-2">
-                {/* Search Toggle (Mock) */}
-                <button className="p-2.5 text-slate-400 hover:text-slate-800 transition-colors">
-                  <Search className="w-5 h-5" />
-                </button>
+                {/* Search Toggle */}
+                <div className="relative flex items-center">
+                  <AnimatePresence>
+                    {showSearch && (
+                      <motion.div
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: 220, opacity: 1 }}
+                        exit={{ width: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          onKeyDown={handleSearch}
+                          placeholder="Search Student ID or Job..."
+                          autoFocus
+                          className="bg-slate-50 border border-slate-100 rounded-full px-4 py-1.5 text-xs font-bold text-slate-800 outline-none focus:border-primary-300 w-full ml-2"
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowSearch(!showSearch)}
+                    className={`p-2.5 transition-colors ${showSearch ? 'text-primary-600 bg-primary-50 rounded-full' : 'text-slate-400 hover:text-slate-800'}`}
+                  >
+                    <Search className="w-5 h-5" />
+                  </motion.button>
+                </div>
 
                 {/* Notifications */}
                 <div className="relative">
