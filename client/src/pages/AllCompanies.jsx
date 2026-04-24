@@ -99,7 +99,7 @@ const AllCompanies = () => {
               >
                 <div className="flex justify-between items-start mb-6">
                   <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center p-3 group-hover:scale-110 transition-transform duration-500">
-                    <img src={company.logo} alt={company.name} className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500" />
+                    <span className="text-2xl font-black text-primary-600">{company.name.charAt(0)}</span>
                   </div>
                   <button 
                     onClick={() => toggleFollow(company.id)}

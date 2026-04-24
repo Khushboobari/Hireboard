@@ -6,12 +6,15 @@ import Navbar from '../components/Navbar';
 import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
 import { User, Mail, Link as LinkIcon, Star, Save, Loader2, Briefcase, Building2, Calendar, FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const dispatch = useDispatch();
   const { user, isLoading: authLoading } = useSelector(state => state.auth);
   const { myApplications, isLoading: appsLoading } = useSelector(state => state.application);
+  const { isAdmin, isRecruiter } = useAuth();
+  const isManager = isAdmin || isRecruiter;
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -85,24 +88,28 @@ const Profile = () => {
                   disabled 
                 />
               </div>
-              <div className="md:col-span-2">
-                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><LinkIcon className="w-3.5 h-3.5"/> Resume Link</label>
-                <input 
-                  type="url" name="resumeLink" 
-                  value={formData.resumeLink} onChange={handleChange} 
-                  className="input-field w-full font-bold" 
-                  placeholder="https://drive.google.com/..."
-                />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><Star className="w-3.5 h-3.5"/> Skills (comma separated)</label>
-                <input 
-                  type="text" name="skills" 
-                  value={formData.skills} onChange={handleChange} 
-                  className="input-field w-full font-bold" 
-                  placeholder="React, Node.js, Python..."
-                />
-              </div>
+              {!isManager && (
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><LinkIcon className="w-3.5 h-3.5"/> Resume Link</label>
+                  <input 
+                    type="url" name="resumeLink" 
+                    value={formData.resumeLink} onChange={handleChange} 
+                    className="input-field w-full font-bold" 
+                    placeholder="https://drive.google.com/..."
+                  />
+                </div>
+              )}
+              {!isManager && (
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><Star className="w-3.5 h-3.5"/> Skills (comma separated)</label>
+                  <input 
+                    type="text" name="skills" 
+                    value={formData.skills} onChange={handleChange} 
+                    className="input-field w-full font-bold" 
+                    placeholder="React, Node.js, Python..."
+                  />
+                </div>
+              )}
             </div>
 
             <div className="pt-6 border-t border-slate-100 flex justify-end">
@@ -114,60 +121,62 @@ const Profile = () => {
           </form>
         </div>
 
-        {/* 2. DASHBOARD SECTION: STATS */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <StatCard title="Applied Jobs" value={totalApplied} icon={FileText} colorClass="bg-blue-500" />
-          <StatCard title="Shortlisted" value={shortlisted} icon={CheckCircle} colorClass="bg-emerald-500" />
-          <StatCard title="Rejected" value={rejected} icon={XCircle} colorClass="bg-rose-500" />
-        </div>
-
-        {/* 3. RECENT APPLICATIONS LIST */}
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-          <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
-            <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight flex items-center gap-2">
-              <Briefcase className="w-5 h-5 text-slate-400"/> Recent Applications
-            </h3>
-            <Link to="/my-applications" className="text-primary-600 hover:text-primary-800 font-black text-xs uppercase tracking-widest">View All</Link>
+        {!isManager && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <StatCard title="Applied Jobs" value={totalApplied} icon={FileText} colorClass="bg-blue-500" />
+            <StatCard title="Shortlisted" value={shortlisted} icon={CheckCircle} colorClass="bg-emerald-500" />
+            <StatCard title="Rejected" value={rejected} icon={XCircle} colorClass="bg-rose-500" />
           </div>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-slate-50/30 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-slate-100">
-                  <th className="px-8 py-4">Job Role</th>
-                  <th className="px-8 py-4">Company</th>
-                  <th className="px-8 py-4">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {appsLoading ? (
-                  <tr><td colSpan="3" className="p-12 text-center text-slate-400 font-bold">Syncing applications...</td></tr>
-                ) : recentApplications.length > 0 ? (
-                  recentApplications.map(app => (
-                    <tr key={app._id} className="hover:bg-slate-50/50 transition-colors group">
-                      <td className="px-8 py-5 font-bold text-slate-800 group-hover:text-primary-600 transition-colors">
-                        {app.jobId?.title || 'Unknown Role'}
-                      </td>
-                      <td className="px-8 py-5 text-slate-600 font-bold flex items-center gap-2">
-                        <Building2 className="w-4 h-4 text-slate-300"/> {app.jobId?.company || 'N/A'}
-                      </td>
-                      <td className="px-8 py-5">
-                        <StatusBadge status={app.status} />
+        )}
+
+        {!isManager && (
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+              <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight flex items-center gap-2">
+                <Briefcase className="w-5 h-5 text-slate-400"/> Recent Applications
+              </h3>
+              <Link to="/my-applications" className="text-primary-600 hover:text-primary-800 font-black text-xs uppercase tracking-widest">View All</Link>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-slate-50/30 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-slate-100">
+                    <th className="px-8 py-4">Job Role</th>
+                    <th className="px-8 py-4">Company</th>
+                    <th className="px-8 py-4">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                  {appsLoading ? (
+                    <tr><td colSpan="3" className="p-12 text-center text-slate-400 font-bold">Syncing applications...</td></tr>
+                  ) : recentApplications.length > 0 ? (
+                    recentApplications.map(app => (
+                      <tr key={app._id} className="hover:bg-slate-50/50 transition-colors group">
+                        <td className="px-8 py-5 font-bold text-slate-800 group-hover:text-primary-600 transition-colors">
+                          {app.jobId?.title || 'Unknown Role'}
+                        </td>
+                        <td className="px-8 py-5 text-slate-600 font-bold flex items-center gap-2">
+                          <Building2 className="w-4 h-4 text-slate-300"/> {app.jobId?.company || 'N/A'}
+                        </td>
+                        <td className="px-8 py-5">
+                          <StatusBadge status={app.status} />
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="3" className="p-12 text-center">
+                        <p className="text-slate-400 font-bold mb-4">No applications found.</p>
+                        <Link to="/jobs" className="text-primary-600 font-black text-sm uppercase border-b-2 border-primary-100 hover:border-primary-600">Start Applying</Link>
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="3" className="p-12 text-center">
-                      <p className="text-slate-400 font-bold mb-4">No applications found.</p>
-                      <Link to="/jobs" className="text-primary-600 font-black text-sm uppercase border-b-2 border-primary-100 hover:border-primary-600">Start Applying</Link>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
 
       </main>
     </div>

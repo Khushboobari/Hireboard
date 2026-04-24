@@ -90,16 +90,19 @@ const JobListings = () => {
         )}
       </main>
 
-      <footer className="bg-white border-t border-slate-100 py-8 px-6 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Briefcase className="w-5 h-5 text-primary-600" />
-            <span className="font-bold text-slate-900">HireBoard</span>
+      <footer className="bg-slate-900 text-white py-12 px-6 mt-auto">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+              <Briefcase className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl font-bold text-white tracking-tight">HireBoard</span>
           </div>
-          <p className="text-slate-500 text-sm">© 2026 HireBoard. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link to="#" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">About</Link>
-            <Link to="#" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">Contact</Link>
+          <p className="text-slate-400 text-sm font-medium">© 2026 HireBoard. All rights reserved.</p>
+          <div className="flex gap-8">
+            <Link to="#" className="text-sm font-bold text-slate-400 hover:text-blue-400 transition-all">About</Link>
+            <Link to="#" className="text-sm font-bold text-slate-400 hover:text-blue-400 transition-all">Contact</Link>
+            <Link to="#" className="text-sm font-bold text-slate-400 hover:text-blue-400 transition-all">Privacy</Link>
           </div>
         </div>
       </footer>

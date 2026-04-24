@@ -128,9 +128,7 @@ const CompanyDetail = () => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary-50 rounded-full -translate-y-1/2 translate-x-1/2 opacity-50 blur-3xl"></div>
           
           <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-10">
-            <div className="w-32 h-32 bg-white rounded-3xl flex items-center justify-center p-6 shadow-2xl shadow-slate-100 border border-slate-50">
-               <span className="text-5xl font-black text-primary-600">{company.name.charAt(0)}</span>
-            </div>
+
             
             <div className="flex-1 text-center md:text-left">
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mb-4">

@@ -2,7 +2,7 @@ const Job = require('../models/Job');
 
 exports.getAllJobs = async (req, res) => {
   try {
-    const { type, search, location, isDeadlineActive } = req.query;
+    const { type, search, location, isDeadlineActive, mine } = req.query;
     let query = { isActive: true };
 
     if (type) {
@@ -45,10 +45,17 @@ exports.getAllJobs = async (req, res) => {
     // Role-based filtering
     if (req.user) {
       if (req.user.role === 'admin') {
-        delete query.isActive; // Admin sees all jobs
+        if (mine === 'true') {
+           query.postedBy = req.user.id;
+        } else {
+           delete query.isActive; // Admin sees all jobs
+        }
       } else if (req.user.role === 'recruiter') {
-        delete query.isActive; // Recruiter sees all their jobs (including inactive)
-        query.postedBy = req.user.id;
+        if (mine === 'true') {
+           delete query.isActive; // Recruiter sees all their jobs (including inactive)
+           query.postedBy = req.user.id;
+        }
+        // If mine is not true, recruiter sees all active jobs (default behavior)
       }
     }
 
@@ -74,6 +81,14 @@ exports.createJob = async (req, res) => {
 
 exports.updateJob = async (req, res) => {
   try {
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ message: 'Job not found' });
+
+    // Check ownership
+    if (job.postedBy.toString() !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'You can only update your own jobs' });
+    }
+
     const updatedJob = await Job.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
@@ -87,6 +102,14 @@ exports.updateJob = async (req, res) => {
 
 exports.deleteJob = async (req, res) => {
   try {
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ message: 'Job not found' });
+
+    // Check ownership
+    if (job.postedBy.toString() !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'You can only delete your own jobs' });
+    }
+
     await Job.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Job has been deleted' });
   } catch (error) {
@@ -97,6 +120,13 @@ exports.deleteJob = async (req, res) => {
 exports.toggleActive = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ message: 'Job not found' });
+
+    // Check ownership
+    if (job.postedBy.toString() !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'You can only toggle your own jobs' });
+    }
+
     job.isActive = !job.isActive;
     const updatedJob = await job.save();
     res.status(200).json(updatedJob);

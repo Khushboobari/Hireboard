@@ -24,7 +24,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     dispatch(fetchAdminStats());
-    dispatch(fetchJobs()); // For recruiters/admins, this gets their/all jobs
+    dispatch(fetchJobs({ mine: true })); // For recruiters/admins, this gets their/all jobs
   }, [dispatch]);
 
   const handleCreateJobClick = () => {
@@ -246,10 +246,10 @@ const AdminDashboard = () => {
                     <div className="flex-1 space-y-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h4 className="font-bold text-lg text-slate-800 flex items-center gap-2">{app.userId.name} <StatusBadge status={app.status}/></h4>
-                          <a href={`mailto:${app.userId.email}`} className="text-primary-600 hover:underline text-sm">{app.userId.email}</a>
+                          <h4 className="font-bold text-lg text-slate-800 flex items-center gap-2">{app.userId?.name || 'Deleted User'} <StatusBadge status={app.status}/></h4>
+                          <a href={`mailto:${app.userId?.email}`} className="text-primary-600 hover:underline text-sm">{app.userId?.email || 'N/A'}</a>
                         </div>
-                        {app.userId.resumeLink && (
+                        {app.userId?.resumeLink && (
                           <a href={app.userId.resumeLink} target="_blank" rel="noreferrer" className="text-sm font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full hover:bg-indigo-100 transition-colors">
                             View Resume
                           </a>
@@ -270,9 +270,9 @@ const AdminDashboard = () => {
                         }}
                         className="input-field w-full text-sm font-semibold"
                       >
-                        <option value="Applied">Applied</option>
-                        <option value="Shortlisted">Shortlisted</option>
-                        <option value="Rejected">Rejected</option>
+                        <option value="applied">Applied</option>
+                        <option value="shortlisted">Shortlisted</option>
+                        <option value="rejected">Rejected</option>
                       </select>
                       <div className="text-xs text-slate-400 mt-4 text-center">Applied on {new Date(app.appliedAt).toLocaleDateString()}</div>
                     </div>
