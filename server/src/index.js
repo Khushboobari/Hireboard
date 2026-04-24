@@ -10,7 +10,11 @@ const app = express();
 
 // Init Middleware
 app.use(express.json({ extended: false }));
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true
+}));
 
 // Define Routes
 app.use('/api/auth', require('./routes/auth'));
