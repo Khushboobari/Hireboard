@@ -7,7 +7,7 @@ import JobCard from '../components/JobCard';
 import { companies } from '../utils/companyData';
 import { 
   Building2, MapPin, Users, Globe, Briefcase, 
-  TrendingUp, Award, Heart, CheckCircle2, 
+  TrendingUp, Award, CheckCircle2, 
   MessageSquare, Coffee, Zap, Loader2 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,31 +17,17 @@ const CompanyDetail = () => {
   const dispatch = useDispatch();
   const { listings, isLoading } = useSelector(state => state.job);
   const [activeTab, setActiveTab] = useState('Open Jobs');
-  const [followed, setFollowed] = useState(false);
 
   const company = companies.find(c => c.name.toLowerCase() === companyName.toLowerCase());
 
   useEffect(() => {
     if (company) {
       dispatch(fetchJobs({ search: company.name }));
-      const saved = JSON.parse(localStorage.getItem('followedCompanies') || '[]');
-      setFollowed(saved.includes(company.id));
     }
     window.scrollTo(0, 0);
   }, [company, dispatch]);
 
-  const toggleFollow = () => {
-    const saved = JSON.parse(localStorage.getItem('followedCompanies') || '[]');
-    let updated;
-    if (saved.includes(company.id)) {
-      updated = saved.filter(id => id !== company.id);
-      setFollowed(false);
-    } else {
-      updated = [...saved, company.id];
-      setFollowed(true);
-    }
-    localStorage.setItem('followedCompanies', JSON.stringify(updated));
-  };
+
 
   if (!company) {
     return (
@@ -68,7 +54,7 @@ const CompanyDetail = () => {
           <div className="col-span-2 text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm">
             <Briefcase className="w-12 h-12 text-slate-200 mx-auto mb-4" />
             <h3 className="text-lg font-bold text-slate-800">No open positions right now</h3>
-            <p className="text-slate-500">Check back later or follow the company for updates.</p>
+            <p className="text-slate-500">Check back later for updates.</p>
           </div>
         )}
       </div>
@@ -159,17 +145,7 @@ const CompanyDetail = () => {
               <p className="text-xl text-slate-500 font-medium mb-8 max-w-2xl leading-relaxed">{company.tagline}</p>
               
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-6">
-                <button 
-                  onClick={toggleFollow}
-                  className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl font-black transition-all shadow-lg ${
-                    followed 
-                      ? 'bg-rose-50 text-rose-600 border-2 border-rose-100 shadow-rose-100' 
-                      : 'bg-primary-600 text-white border-2 border-primary-600 shadow-primary-200 hover:scale-105 active:scale-95'
-                  }`}
-                >
-                  <Heart className={`w-5 h-5 ${followed ? 'fill-current' : ''}`} />
-                  {followed ? 'Following Company' : 'Follow Company'}
-                </button>
+
                 <div className="flex items-center gap-4 text-slate-400 font-bold text-sm">
                   <div className="flex items-center gap-2">
                     <Globe className="w-4 h-4" /> website.com

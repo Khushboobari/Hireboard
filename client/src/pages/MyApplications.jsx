@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyApplications } from '../features/applications/applicationSlice';
 import Navbar from '../components/Navbar';
@@ -10,16 +11,14 @@ const MyApplications = () => {
   const dispatch = useDispatch();
   const { myApplications, isLoading } = useSelector(state => state.application);
   const [view, setView] = useState('kanban'); // 'list' or 'kanban'
+  const [selectedApp, setSelectedApp] = useState(null);
 
   useEffect(() => {
     dispatch(fetchMyApplications());
   }, [dispatch]);
 
   const columns = [
-    { id: 'applied', title: 'Applied', icon: <Clock className="w-4 h-4 text-blue-500" />, color: 'bg-blue-50' },
-    { id: 'shortlisted', title: 'Under Review', icon: <AlertCircle className="w-4 h-4 text-amber-500" />, color: 'bg-amber-50' },
-    { id: 'interview', title: 'Interviewing', icon: <LayoutGrid className="w-4 h-4 text-purple-500" />, color: 'bg-purple-50' },
-    { id: 'offered', title: 'Offered', icon: <CheckCircle2 className="w-4 h-4 text-emerald-500" />, color: 'bg-emerald-50' }
+    { id: 'applied', title: 'Applied', icon: <Clock className="w-4 h-4 text-blue-500" />, color: 'bg-blue-50' }
   ];
 
   const getAppsByStatus = (status) => {
@@ -66,7 +65,7 @@ const MyApplications = () => {
         ) : myApplications.length > 0 ? (
           <div className="overflow-hidden">
             {view === 'kanban' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+              <div className="grid grid-cols-1 gap-6 items-start max-w-md mx-auto">
                 {columns.map(col => {
                   const apps = getAppsByStatus(col.id);
                   return (
@@ -82,13 +81,14 @@ const MyApplications = () => {
                       <div className="space-y-4">
                         <AnimatePresence>
                           {apps.map(app => (
-                            <motion.div
-                              layout
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              key={app._id}
-                              className="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
-                            >
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      key={app._id}
+                      onClick={() => setSelectedApp(app)}
+                      className="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
+                    >
                               <div className="flex items-center gap-3 mb-4">
                                 <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-primary-50 group-hover:text-primary-500 transition-colors">
                                   <Building2 className="w-5 h-5" />
@@ -152,7 +152,10 @@ const MyApplications = () => {
                         </p>
                       </div>
                       <div className="h-10 w-px bg-slate-100 hidden md:block"></div>
-                      <button className="bg-slate-800 text-white px-6 py-3 rounded-2xl font-black text-sm hover:bg-primary-600 shadow-lg shadow-slate-200 transition-all">
+                      <button 
+                        onClick={() => setSelectedApp(app)}
+                        className="bg-slate-800 text-white px-6 py-3 rounded-2xl font-black text-sm hover:bg-primary-600 shadow-lg shadow-slate-200 transition-all"
+                      >
                         View Application
                       </button>
                     </div>
@@ -172,6 +175,79 @@ const MyApplications = () => {
           </div>
         )}
       </main>
+      
+      <AnimatePresence>
+        {selectedApp && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedApp(null)}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative bg-white w-full max-w-lg rounded-[40px] p-8 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-full -translate-y-1/2 translate-x-1/2 opacity-50 blur-2xl"></div>
+              
+              <div className="flex justify-between items-start mb-8">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400">
+                    <Building2 className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-slate-800 tracking-tight">{selectedApp.jobId?.title || 'Job Unavailable'}</h3>
+                    <p className="text-slate-500 font-bold">{selectedApp.jobId?.company || 'N/A'}</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedApp(null)}
+                  className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                >
+                  <LayoutGrid className="w-5 h-5 text-slate-400 rotate-45" />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                  <div>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p>
+                    <StatusBadge status={selectedApp.status} />
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Applied Date</p>
+                    <p className="font-bold text-slate-700 flex items-center justify-end gap-2 text-sm">
+                      <Calendar className="w-4 h-4 text-slate-400" /> {new Date(selectedApp.appliedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Your Cover Note</p>
+                  <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 relative">
+                    <p className="text-slate-600 italic leading-relaxed">
+                      {selectedApp.coverNote ? `"${selectedApp.coverNote}"` : 'No cover note provided.'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <Link 
+                    to={`/jobs/${selectedApp.jobId?._id}`}
+                    className="w-full bg-slate-800 text-white py-4 rounded-2xl font-black text-center block hover:bg-primary-600 transition-all shadow-lg"
+                  >
+                    View Original Job Posting
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

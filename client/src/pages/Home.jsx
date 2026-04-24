@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { Briefcase, Sparkles, Target, ArrowRight, ShieldCheck, Users, Zap, CheckCircle, TrendingUp, Award, MessageSquare, Search, Layout, Database, Layers, BarChart, GraduationCap } from 'lucide-react';
+import { Briefcase, Sparkles, Target, ArrowRight, ShieldCheck, Users, Zap, CheckCircle, TrendingUp, Award, MessageSquare, Search, Layout, Database, Layers, BarChart, GraduationCap, Github, Linkedin, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchJobs } from '../features/jobs/jobSlice';
@@ -57,7 +57,6 @@ const Home = () => {
            job.description.toLowerCase().includes(activeCategory.toLowerCase());
   }).slice(0, 3); // show 3 top jobs
 
-  const featuredJobs = listings.slice(0, 4);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -301,16 +300,13 @@ const Home = () => {
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Recommended Jobs</h2>
             </div>
-            <Link to="/jobs" className="text-primary-600 font-semibold hover:text-primary-700 flex items-center gap-1 group">
-               Browse all <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
           </div>
 
           {isLoading ? (
             <div className="text-center text-slate-500 py-10">Loading jobs...</div>
-          ) : featuredJobs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:grid-cols-4">
-              {featuredJobs.map(job => (
+          ) : listings.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:grid-cols-3">
+              {listings.slice(0, 6).map(job => (
                  <div key={job._id} className="relative group flex flex-col h-full">
                     <div className="absolute -top-3 -right-3 z-20">
                       <span className="bg-rose-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full shadow-sm">
@@ -326,55 +322,19 @@ const Home = () => {
                <p className="text-slate-500">More featured jobs coming soon.</p>
             </div>
           )}
-        </div>
-      </section>
 
-      {/* Features Grid */}
-      <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Why use HireBoard?</h2>
-            <p className="text-slate-500 max-w-xl mx-auto">Everything you need to navigate your career journey from campus to corporate.</p>
+          <div className="mt-16 flex justify-center">
+            <Link 
+              to="/jobs" 
+              className="px-10 py-4 bg-white text-slate-900 border border-slate-200 rounded-2xl font-black hover:bg-slate-50 transition-all shadow-sm flex items-center gap-3 active:scale-95"
+            >
+              View More Jobs <ArrowRight className="w-5 h-5 text-primary-500" />
+            </Link>
           </div>
-
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {[
-              {
-                icon: Sparkles,
-                color: "text-amber-600 bg-amber-50",
-                title: "AI Cover Notes",
-                desc: "Don't stare at a blank screen. Let Claude AI generate professional, tailored cover notes instantly based on the job profile."
-              },
-              {
-                icon: Target,
-                color: "text-primary-600 bg-primary-50",
-                title: "Seamless Tracking",
-                desc: "Keep all your applications in one place. Instantly see if you're Shortlisted, Rejected, or still under Review."
-              },
-              {
-                icon: Users,
-                color: "text-emerald-600 bg-emerald-50",
-                title: "Direct Admin Access",
-                desc: "Employers and college placement cells can easily post jobs and manage applicant statuses via a powerful admin dashboard."
-              }
-            ].map((feat, idx) => (
-              <motion.div key={idx} variants={itemVariants} className="card p-8 group">
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${feat.color}`}>
-                  <feat.icon className="w-7 h-7" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-800 mb-3">{feat.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{feat.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </section>
+
+
 
       {/* How it Works Section */}
       <section className="py-24 bg-slate-50 border-t border-slate-100">
@@ -502,12 +462,94 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Footer Minimal */}
-      <footer className="bg-slate-950 py-8 text-center border-t border-slate-900">
-        <p className="text-slate-500 flex items-center justify-center gap-2">
-          <Briefcase className="w-5 h-5 text-primary-600"/> 
-          <span className="font-semibold text-slate-300">HireBoard</span> © {new Date().getFullYear()}
-        </p>
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white pt-20 pb-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            {/* Logo & Tagline */}
+            <div className="space-y-6">
+              <div className="flex items-center space-x-2">
+                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                  <Briefcase className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-white tracking-tight">HireBoard</span>
+              </div>
+              <p className="text-slate-400 leading-relaxed">
+                The leading career platform connecting top talent with industry-leading companies through intelligent matching.
+              </p>
+              <div className="flex items-center space-x-4">
+                <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
+                  <Github className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
+                  <Instagram className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-white font-bold mb-6">Quick Links</h4>
+              <ul className="space-y-4">
+                <li><Link to="/jobs" className="text-slate-400 hover:text-blue-400 transition-colors">Browse Jobs</Link></li>
+                <li><Link to="/companies" className="text-slate-400 hover:text-blue-400 transition-colors">Companies</Link></li>
+                {['Salaries', 'Interview Prep', 'Career Advice'].map((link) => (
+                  <li key={link}>
+                    <a href="#" className="text-slate-400 hover:text-blue-400 transition-colors">{link}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Support */}
+            <div>
+              <h4 className="text-white font-bold mb-6">Support</h4>
+              <ul className="space-y-4">
+                {['Help Center', 'Safety Center', 'Community Guidelines', 'Privacy Policy', 'Terms of Service'].map((link) => (
+                  <li key={link}>
+                    <a href="#" className="text-slate-400 hover:text-blue-400 transition-colors">{link}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div>
+              <h4 className="text-white font-bold mb-6">Contact Us</h4>
+              <ul className="space-y-6">
+                <li className="flex items-start space-x-3 text-slate-400">
+                  <Mail className="w-5 h-5 text-blue-500 mt-0.5" />
+                  <span>support@hireboard.com</span>
+                </li>
+                <li className="flex items-start space-x-3 text-slate-400">
+                  <Phone className="w-5 h-5 text-blue-500 mt-0.5" />
+                  <span>+1 (555) 000-0000</span>
+                </li>
+                <li className="flex items-start space-x-3 text-slate-400">
+                  <MapPin className="w-5 h-5 text-blue-500 mt-0.5" />
+                  <span>123 Career Blvd, Suite 100<br />San Francisco, CA 94105</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-slate-500 text-sm">
+              © {new Date().getFullYear()} HireBoard. All rights reserved.
+            </p>
+            <div className="flex items-center space-x-8 text-sm text-slate-500 font-medium">
+              <a href="#" className="hover:text-blue-400">Cookie Policy</a>
+              <a href="#" className="hover:text-blue-400">Site Map</a>
+              <a href="#" className="hover:text-blue-400">Accessibility</a>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );

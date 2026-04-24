@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchJobs, resetJobState } from '../features/jobs/jobSlice';
 import JobCard from '../components/JobCard';
 import Navbar from '../components/Navbar';
-import { Search, Filter, Loader2 } from 'lucide-react';
+import { Search, Filter, Loader2, Briefcase } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 const JobListings = () => {
   const dispatch = useDispatch();
@@ -89,6 +89,20 @@ const JobListings = () => {
           </div>
         )}
       </main>
+
+      <footer className="bg-white border-t border-slate-100 py-8 px-6 mt-auto">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Briefcase className="w-5 h-5 text-primary-600" />
+            <span className="font-bold text-slate-900">HireBoard</span>
+          </div>
+          <p className="text-slate-500 text-sm">© 2026 HireBoard. All rights reserved.</p>
+          <div className="flex gap-6">
+            <Link to="#" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">About</Link>
+            <Link to="#" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">Contact</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
