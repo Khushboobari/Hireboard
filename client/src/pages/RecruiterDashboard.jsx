@@ -8,9 +8,9 @@ import StatusBadge from '../components/StatusBadge';
 import { Briefcase, Activity, FileText, ArrowLeft, Plus, Trash2, Edit, Users, LayoutDashboard, Target } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
-const AdminDashboard = () => {
+const RecruiterDashboard = () => {
   const dispatch = useDispatch();
-  const { stats, jobApplicants, isLoading: isAdminLoading } = useSelector(state => state.admin);
+  const { stats, jobApplicants, isLoading: isRecruiterLoading } = useSelector(state => state.admin);
   const { listings: jobs, isLoading: isJobsLoading } = useSelector(state => state.job);
   const { user } = useAuth();
 
@@ -24,7 +24,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     dispatch(fetchAdminStats());
-    dispatch(fetchJobs({ mine: true })); // For recruiters/admins, this gets their/all jobs
+    dispatch(fetchJobs({ mine: true })); 
   }, [dispatch]);
 
   const handleCreateJobClick = () => {
@@ -74,13 +74,13 @@ const AdminDashboard = () => {
         onClick={() => setActiveTab('overview')}
         className={`px-6 py-4 font-semibold flex items-center gap-2 border-b-2 transition-colors ${activeTab === 'overview' ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
       >
-        <LayoutDashboard className="w-5 h-5" /> System Overview
+        <LayoutDashboard className="w-5 h-5" /> My Overview
       </button>
       <button 
         onClick={() => setActiveTab('jobs')}
         className={`px-6 py-4 font-semibold flex items-center gap-2 border-b-2 transition-colors ${['jobs', 'jobForm'].includes(activeTab) ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
       >
-        <Briefcase className="w-5 h-5" /> Manage All Jobs
+        <Briefcase className="w-5 h-5" /> My Listings
       </button>
       {activeTab === 'applicants' && (
         <button className="px-6 py-4 font-semibold flex items-center gap-2 border-b-2 border-indigo-600 text-indigo-600">
@@ -108,7 +108,7 @@ const AdminDashboard = () => {
 
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
               <div className="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
-                <h3 className="text-lg font-bold text-slate-800">Applications per Job</h3>
+                <h3 className="text-lg font-bold text-slate-800">My Performance</h3>
               </div>
               <div className="p-6 overflow-x-auto">
                 <table className="w-full text-left">
@@ -144,7 +144,7 @@ const AdminDashboard = () => {
         {activeTab === 'jobs' && (
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
             <div className="px-6 py-4 flex justify-between items-center border-b border-slate-100">
-              <h3 className="text-lg font-bold text-slate-800">All Job Listings</h3>
+              <h3 className="text-lg font-bold text-slate-800">My Published Jobs</h3>
               <button onClick={handleCreateJobClick} className="btn-primary py-2 px-4 flex items-center gap-2">
                 <Plus className="w-4 h-4"/> Create Job
               </button>
@@ -237,7 +237,7 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {isAdminLoading ? (
+            {isRecruiterLoading ? (
               <div className="text-center p-10 text-slate-500">Loading applicants...</div>
             ) : (
               <div className="grid gap-6">
@@ -293,4 +293,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default RecruiterDashboard;

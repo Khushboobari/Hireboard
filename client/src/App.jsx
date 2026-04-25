@@ -10,6 +10,7 @@ import MyApplications from './pages/MyApplications';
 import SavedJobs from './pages/SavedJobs';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
+import RecruiterDashboard from './pages/RecruiterDashboard';
 import ApplyPage from './pages/ApplyPage';
 import AllCompanies from './pages/AllCompanies';
 import CompanyDetail from './pages/CompanyDetail';
@@ -24,8 +25,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={!user ? <Login /> : <Navigate to={isManager ? '/admin' : '/jobs'} />} />
-      <Route path="/register" element={!user ? <Register /> : <Navigate to={isManager ? '/admin' : '/jobs'} />} />
+      <Route path="/login" element={!user ? <Login /> : <Navigate to={user.role === 'admin' ? '/admin' : user.role === 'recruiter' ? '/recruiter' : '/jobs'} />} />
+      <Route path="/register" element={!user ? <Register /> : <Navigate to={user.role === 'admin' ? '/admin' : user.role === 'recruiter' ? '/recruiter' : '/jobs'} />} />
       
       {/* Protected Routes (Everyone) */}
       <Route element={<ProtectedRoute />}>
@@ -45,6 +46,7 @@ function App() {
       {/* Admin Only Routes */}
       <Route element={<ProtectedRoute adminOnly={true} />}>
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/recruiter" element={<RecruiterDashboard />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />

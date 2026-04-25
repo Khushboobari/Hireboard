@@ -47,7 +47,7 @@ const Navbar = () => {
 
   const navLinks = isManager 
     ? [
-        { name: isAdmin ? 'Admin' : 'Recruiter', path: '/admin' },
+        { name: isAdmin ? 'Admin' : 'Recruiter', path: isAdmin ? '/admin' : '/recruiter' },
         { name: 'Jobs', path: '/jobs' }
       ]
     : [

@@ -20,8 +20,7 @@ const Login = () => {
   useEffect(() => {
     if (isError) alert(message);
     if (isSuccess || user) {
-      const isManager = user?.role === 'admin' || user?.role === 'recruiter';
-      navigate(isManager ? '/admin' : '/jobs');
+      navigate(user?.role === 'admin' ? '/admin' : user?.role === 'recruiter' ? '/recruiter' : '/jobs');
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
