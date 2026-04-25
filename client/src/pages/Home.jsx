@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { Briefcase, Sparkles, Target, ArrowRight, ShieldCheck, Users, Zap, CheckCircle, TrendingUp, Award, MessageSquare, Search, Layout, Database, Layers, BarChart, GraduationCap, Github, Linkedin, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Briefcase, Sparkles, Target, ArrowRight, ShieldCheck, Users, Zap, CheckCircle, TrendingUp, Award, MessageSquare, Search, Layout, Database, Layers, BarChart, GraduationCap, Mail, Phone, MapPin } from 'lucide-react';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchJobs } from '../features/jobs/jobSlice';
@@ -479,16 +480,16 @@ const Home = () => {
               </p>
               <div className="flex items-center space-x-4">
                 <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
-                  <Github className="w-5 h-5" />
+                  <FaGithub className="w-5 h-5" />
                 </a>
                 <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
-                  <Linkedin className="w-5 h-5" />
+                  <FaLinkedin className="w-5 h-5" />
                 </a>
                 <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
-                  <Twitter className="w-5 h-5" />
+                  <FaTwitter className="w-5 h-5" />
                 </a>
                 <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
-                  <Instagram className="w-5 h-5" />
+                  <FaInstagram className="w-5 h-5" />
                 </a>
               </div>
             </div>
